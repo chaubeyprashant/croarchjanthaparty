@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Cockroach Janta Party  Voice of the Lazy &amp; Unemployed</title>
+  <desc id="desc">Social preview card with slogan and party identity.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f4ede3" />
+      <stop offset="100%" stop-color="#e8ddcc" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="8" dy="8" stdDeviation="0" flood-color="#1f1510" flood-opacity="1" />
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <rect x="0" y="0" width="1200" height="54" fill="#2a2118" />
+  <text x="42" y="35" fill="#f4ede3" font-size="20" font-family="DM Sans, Arial, sans-serif" letter-spacing="2">
+    GENERAL DISGRUNTLEMENT  ·  SPONSORED BY NO ONE  ·  FUNDED BY NOTHING
+  </text>
+
+  <g transform="translate(58 104)">
+    <circle cx="36" cy="36" r="34" fill="#f4ede3" stroke="#1f1510" stroke-width="3" />
+    <ellipse cx="36" cy="38" rx="10" ry="16" fill="#6b3f1f" />
+    <ellipse cx="36" cy="23" rx="7" ry="6" fill="#6b3f1f" />
+    <line x1="24" y1="29" x2="14" y2="21" stroke="#6b3f1f" stroke-width="2.5" />
+    <line x1="24" y1="37" x2="12" y2="37" stroke="#6b3f1f" stroke-width="2.5" />
+    <line x1="24" y1="45" x2="14" y2="54" stroke="#6b3f1f" stroke-width="2.5" />
+    <line x1="48" y1="29" x2="58" y2="21" stroke="#6b3f1f" stroke-width="2.5" />
+    <line x1="48" y1="37" x2="60" y2="37" stroke="#6b3f1f" stroke-width="2.5" />
+    <line x1="48" y1="45" x2="58" y2="54" stroke="#6b3f1f" stroke-width="2.5" />
+  </g>
+
+  <text x="152" y="154" fill="#1f1510" font-size="48" font-weight="700" font-family="DM Sans, Arial, sans-serif" letter-spacing="1">
+    COCKROACH JANTA PARTY
+  </text>
+  <text x="152" y="193" fill="#6b4f3a" font-size="30" font-family="DM Sans, Arial, sans-serif">
+    I0K ($> *>0M@ · Est. 2026
+  </text>
+
+  <rect x="92" y="242" width="1016" height="2" fill="#1f1510" />
+
+  <text x="96" y="330" fill="#1f1510" font-size="84" font-weight="700" font-family="DM Sans, Arial, sans-serif">
+    Voice of the
+  </text>
+  <text x="560" y="330" fill="#c4652a" font-size="84" font-style="italic" font-family="Georgia, serif">
+    Lazy &amp;
+  </text>
+  <text x="820" y="330" fill="#1e4d36" font-size="84" font-style="italic" font-family="Georgia, serif">
+    Unemployed.
+  </text>
+
+  <text x="96" y="394" fill="#1f1510" font-size="40" font-family="DM Sans, Arial, sans-serif">
+    Five demands. Zero sponsors. One large, stubborn swarm.
+  </text>
+
+  <g filter="url(#shadow)">
+    <rect x="96" y="452" width="490" height="94" fill="#c4652a" stroke="#1f1510" stroke-width="4" />
+  </g>
+  <text x="136" y="510" fill="#f4ede3" font-size="42" font-weight="700" letter-spacing="2" font-family="DM Sans, Arial, sans-serif">
+    JOIN THE MOVEMENT ’
+  </text>
+</svg>
