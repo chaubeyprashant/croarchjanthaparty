@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   createUserWithEmailAndPassword,
+  deleteUser,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
@@ -40,6 +41,20 @@ function mapUserDoc(docSnap) {
   }
 }
 
+function toAuthMessage(error, fallback) {
+  if (!error?.code) return fallback
+  if (error.code === 'permission-denied') {
+    return 'Database permission denied. Deploy Firestore rules and try again.'
+  }
+  if (error.code === 'unavailable') {
+    return 'Database is temporarily unavailable. Please try again.'
+  }
+  if (error.code === 'failed-precondition') {
+    return 'Firestore is not fully enabled for this project yet.'
+  }
+  return fallback
+}
+
 export function AuthProvider({ children }) {
   const [users, setUsers] = useState([])
   const [session, setSession] = useState(null)
@@ -58,33 +73,33 @@ export function AuthProvider({ children }) {
 
       const email = (firebaseUser.email || '').toLowerCase()
       const userRef = doc(db, 'users', firebaseUser.uid)
-      const snapshot = await getDoc(userRef)
-
-      if (!snapshot.exists()) {
-        const role = adminEmail && email === adminEmail ? 'admin' : 'member'
-        await setDoc(userRef, {
-          name: firebaseUser.displayName || email.split('@')[0] || 'Member',
+      try {
+        const snapshot = await getDoc(userRef)
+        const data = snapshot.data() || {}
+        setSession({
+          id: firebaseUser.uid,
+          email: email || data.email || '',
+          name: data.name || firebaseUser.displayName || 'Member',
+          role: data.role || 'member',
+          city: data.city || '',
+          state: data.state || '',
+          joinedAt: normalizeDate(data.joinedAt) || new Date().toISOString(),
+        })
+        setAuthReady(true)
+        setAuthError('')
+      } catch (error) {
+        setSession({
+          id: firebaseUser.uid,
           email,
+          name: firebaseUser.displayName || 'Member',
+          role: 'member',
           city: '',
           state: '',
-          role,
-          joinedAt: serverTimestamp(),
+          joinedAt: new Date().toISOString(),
         })
+        setAuthReady(true)
+        setAuthError(toAuthMessage(error, 'Signed in, but profile sync failed. Check Firestore rules.'))
       }
-
-      const hydrated = await getDoc(userRef)
-      const data = hydrated.data() || {}
-      setSession({
-        id: firebaseUser.uid,
-        email: email || data.email || '',
-        name: data.name || firebaseUser.displayName || 'Member',
-        role: data.role || 'member',
-        city: data.city || '',
-        state: data.state || '',
-        joinedAt: normalizeDate(data.joinedAt) || new Date().toISOString(),
-      })
-      setAuthReady(true)
-      setAuthError('')
     })
     return unsubscribe
   }, [])
@@ -128,14 +143,20 @@ export function AuthProvider({ children }) {
       try {
         const credential = await createUserWithEmailAndPassword(auth, normalized, password)
         const role = adminEmail && normalized === adminEmail ? 'admin' : 'member'
-        await setDoc(doc(db, 'users', credential.user.uid), {
-          name: name.trim(),
-          email: normalized,
-          city: (city || '').trim(),
-          state: (state || '').trim(),
-          role,
-          joinedAt: serverTimestamp(),
-        })
+        try {
+          await setDoc(doc(db, 'users', credential.user.uid), {
+            name: name.trim(),
+            email: normalized,
+            city: (city || '').trim(),
+            state: (state || '').trim(),
+            role,
+            joinedAt: serverTimestamp(),
+          })
+        } catch (error) {
+          // Keep auth and Firestore consistent: remove just-created auth user if profile write fails.
+          await deleteUser(credential.user).catch(() => {})
+          throw error
+        }
         setAuthError('')
         return { ok: true }
       } catch (error) {
@@ -144,6 +165,8 @@ export function AuthProvider({ children }) {
           message = 'An account already exists for that email.'
         } else if (error.code === 'auth/weak-password') {
           message = 'Password should be at least 6 characters.'
+        } else {
+          message = toAuthMessage(error, message)
         }
         setAuthError(message)
         return { ok: false, error: message }
