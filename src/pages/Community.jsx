@@ -1,71 +1,19 @@
 import { useEffect, useMemo, useState } from 'react'
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  deleteDoc,
+  doc,
+  increment,
+  onSnapshot,
+  serverTimestamp,
+  updateDoc,
+} from 'firebase/firestore'
 import { useAuth } from '../context/auth-context.js'
-import { load, save } from '../lib/storage.js'
 import { Reveal } from '../components/Reveal.jsx'
 import { Seo } from '../components/Seo.jsx'
-
-const THREADS_KEY = 'forum:threads'
-
-const SEED_THREADS = [
-  {
-    id: 't-1',
-    title: 'Should we publish the legal team\'s notes on the UAPA clause?',
-    body:
-      'Transparency-first or strategy-first? Open thread on whether to publish working notes for Manifesto Point 02.',
-    category: 'Legal',
-    author: 'Convenor',
-    authorId: 'admin-1',
-    createdAt: '2026-05-17T08:30:00.000Z',
-    pinned: true,
-    status: 'open',
-    votes: 184,
-    comments: [
-      {
-        id: 'c-1-1',
-        author: 'Convenor',
-        authorId: 'admin-1',
-        body: 'Lean toward publishing. The point is accountability.',
-        createdAt: '2026-05-17T09:00:00.000Z',
-      },
-    ],
-  },
-  {
-    id: 't-2',
-    title: 'Designing a city-by-city rollout for poster No. 002',
-    body:
-      'Volunteers in Pune, Hyderabad, and Kolkata: drop your distribution windows here. We\'ll batch print.',
-    category: 'Volunteers',
-    author: 'Meera',
-    authorId: 'seed-2',
-    createdAt: '2026-05-19T11:45:00.000Z',
-    pinned: false,
-    status: 'open',
-    votes: 92,
-    comments: [],
-  },
-  {
-    id: 't-3',
-    title: 'Tracking godi media bank accounts — open dataset?',
-    body:
-      'Started compiling publicly available filings for Manifesto Point 04. Looking for a researcher to verify.',
-    category: 'Research',
-    author: 'Zoya',
-    authorId: 'seed-3',
-    createdAt: '2026-05-20T15:10:00.000Z',
-    pinned: false,
-    status: 'open',
-    votes: 56,
-    comments: [
-      {
-        id: 'c-3-1',
-        author: 'Aarav',
-        authorId: 'seed-4',
-        body: 'I can help with verification. DM me a sample row.',
-        createdAt: '2026-05-20T16:00:00.000Z',
-      },
-    ],
-  },
-]
+import { db, firebaseConfigError, isFirebaseConfigured, normalizeDate } from '../lib/firebase.js'
 
 const CATEGORIES = ['All', 'General', 'Campaigns', 'Volunteers', 'Legal', 'Research', 'Funding']
 
@@ -79,12 +27,10 @@ function timeAgo(iso) {
 
 export function Community() {
   const { isAuthenticated, isAdmin, user } = useAuth()
-  const [threads, setThreads] = useState(() => {
-    const stored = load(THREADS_KEY, null)
-    if (stored && stored.length) return stored
-    save(THREADS_KEY, SEED_THREADS)
-    return SEED_THREADS
-  })
+  const [threads, setThreads] = useState([])
+  const [backendError, setBackendError] = useState(() =>
+    isFirebaseConfigured ? '' : firebaseConfigError(),
+  )
   const [filter, setFilter] = useState('All')
   const [sort, setSort] = useState('top')
   const [query, setQuery] = useState('')
@@ -93,8 +39,35 @@ export function Community() {
   const [commentDraft, setCommentDraft] = useState('')
 
   useEffect(() => {
-    save(THREADS_KEY, threads)
-  }, [threads])
+    if (!isFirebaseConfigured || !db) return undefined
+    const threadsQuery = collection(db, 'threads')
+    return onSnapshot(
+      threadsQuery,
+      (snapshot) => {
+        const mapped = snapshot.docs.map((docSnap) => {
+          const data = docSnap.data()
+          return {
+            id: docSnap.id,
+            title: data.title || '',
+            body: data.body || '',
+            category: data.category || 'General',
+            author: data.author || 'Member',
+            authorId: data.authorId || '',
+            createdAt: normalizeDate(data.createdAt) || new Date().toISOString(),
+            pinned: Boolean(data.pinned),
+            status: data.status || 'open',
+            votes: data.votes || 0,
+            comments: Array.isArray(data.comments) ? data.comments : [],
+          }
+        })
+        setThreads(mapped)
+        setBackendError('')
+      },
+      () => {
+        setBackendError('Unable to load forum threads from Firebase.')
+      },
+    )
+  }, [])
 
   const filtered = useMemo(() => {
     const base = threads.filter((thread) => {
@@ -113,37 +86,41 @@ export function Community() {
     return sorted
   }, [threads, filter, sort, query])
 
-  const handlePost = (event) => {
+  const handlePost = async (event) => {
     event.preventDefault()
-    if (!isAuthenticated) return
+    if (!isAuthenticated || !isFirebaseConfigured || !db) return
     if (!draft.title.trim() || !draft.body.trim()) return
     const thread = {
-      id: `t-${Date.now().toString(36)}`,
       title: draft.title.trim(),
       body: draft.body.trim(),
       category: draft.category,
       author: user.name,
       authorId: user.id,
-      createdAt: new Date().toISOString(),
       pinned: false,
       status: 'open',
       votes: 1,
       comments: [],
+      createdAt: serverTimestamp(),
     }
-    setThreads((current) => [thread, ...current])
-    setDraft({ title: '', body: '', category: 'General' })
+    try {
+      await addDoc(collection(db, 'threads'), thread)
+      setDraft({ title: '', body: '', category: 'General' })
+    } catch {
+      setBackendError('Unable to post thread right now.')
+    }
   }
 
-  const handleVote = (threadId, delta) => {
-    setThreads((current) =>
-      current.map((thread) =>
-        thread.id === threadId ? { ...thread, votes: thread.votes + delta } : thread,
-      ),
-    )
+  const handleVote = async (threadId, delta) => {
+    if (!db) return
+    try {
+      await updateDoc(doc(db, 'threads', threadId), { votes: increment(delta) })
+    } catch {
+      setBackendError('Unable to update votes right now.')
+    }
   }
 
-  const handleComment = (threadId) => {
-    if (!commentDraft.trim() || !isAuthenticated) return
+  const handleComment = async (threadId) => {
+    if (!commentDraft.trim() || !isAuthenticated || !db) return
     const comment = {
       id: `c-${Date.now().toString(36)}`,
       author: user.name,
@@ -151,33 +128,42 @@ export function Community() {
       body: commentDraft.trim(),
       createdAt: new Date().toISOString(),
     }
-    setThreads((current) =>
-      current.map((thread) =>
-        thread.id === threadId
-          ? { ...thread, comments: [...thread.comments, comment] }
-          : thread,
-      ),
-    )
-    setCommentDraft('')
+    try {
+      await updateDoc(doc(db, 'threads', threadId), {
+        comments: arrayUnion(comment),
+      })
+      setCommentDraft('')
+    } catch {
+      setBackendError('Unable to post comment right now.')
+    }
   }
 
-  const handleStatus = (threadId, status) => {
-    setThreads((current) =>
-      current.map((thread) => (thread.id === threadId ? { ...thread, status } : thread)),
-    )
+  const handleStatus = async (threadId, status) => {
+    if (!db) return
+    try {
+      await updateDoc(doc(db, 'threads', threadId), { status })
+    } catch {
+      setBackendError('Unable to update thread status.')
+    }
   }
 
-  const handlePin = (threadId) => {
-    setThreads((current) =>
-      current.map((thread) =>
-        thread.id === threadId ? { ...thread, pinned: !thread.pinned } : thread,
-      ),
-    )
+  const handlePin = async (threadId, pinned) => {
+    if (!db) return
+    try {
+      await updateDoc(doc(db, 'threads', threadId), { pinned: !pinned })
+    } catch {
+      setBackendError('Unable to pin thread right now.')
+    }
   }
 
-  const handleDelete = (threadId) => {
-    setThreads((current) => current.filter((thread) => thread.id !== threadId))
-    if (activeThreadId === threadId) setActiveThreadId(null)
+  const handleDelete = async (threadId) => {
+    if (!db) return
+    try {
+      await deleteDoc(doc(db, 'threads', threadId))
+      if (activeThreadId === threadId) setActiveThreadId(null)
+    } catch {
+      setBackendError('Unable to delete thread right now.')
+    }
   }
 
   return (
@@ -206,6 +192,7 @@ export function Community() {
           A public square for members. Post a campaign idea, debate the manifesto, recruit
           volunteers, or just send a meme. Upvote what matters. Ignore the rest.
         </Reveal>
+        {backendError && <p className="auth-error">{backendError}</p>}
       </section>
 
       <section className="section community-layout">
@@ -365,7 +352,11 @@ export function Community() {
                     </button>
                     {isAdmin && (
                       <>
-                        <button type="button" className="link" onClick={() => handlePin(thread.id)}>
+                        <button
+                          type="button"
+                          className="link"
+                          onClick={() => handlePin(thread.id, thread.pinned)}
+                        >
                           {thread.pinned ? 'Unpin' : 'Pin'}
                         </button>
                         <button

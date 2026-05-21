@@ -276,7 +276,6 @@ main {
 .section-head em,
 .contact h2 em,
 .eligibility h2 em,
-.founder h2 em,
 .auth-modal em {
   font-family: var(--serif);
   font-style: italic;
@@ -558,7 +557,6 @@ main {
 .mission-card,
 .propaganda-card,
 .req-card,
-.founder-card,
 .contact-cta,
 .donate-form,
 .impact-card,
@@ -727,32 +725,6 @@ main {
   font-style: italic;
   line-height: 1.6;
 }
-
-.founder-card {
-  display: grid;
-  grid-template-columns: 180px 1fr;
-  gap: 1.5rem;
-  padding: 1.5rem;
-  align-items: center;
-}
-
-.founder-photo {
-  aspect-ratio: 1;
-  border: 2px solid var(--ink);
-  background:
-    radial-gradient(circle at 50% 30%, #c9a88d, #7a5a45),
-    linear-gradient(180deg, #ddd2c0, #b69b84);
-}
-
-.founder-label {
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--orange);
-  margin-bottom: 0.35rem;
-}
-
-.founder-role { color: var(--brown); margin: 0.35rem 0 0.75rem; }
 
 /* ==========================================================================
    Contact section
@@ -1537,7 +1509,6 @@ select:focus-visible {
   .header-actions .btn-ghost { display: none; }
   .poster-body,
   .propaganda-card,
-  .founder-card,
   .contact-grid { grid-template-columns: 1fr; }
   .poster-leader {
     min-height: 220px;

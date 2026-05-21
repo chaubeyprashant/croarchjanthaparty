@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
+import { addDoc, collection, limit, onSnapshot, orderBy, query, serverTimestamp } from 'firebase/firestore'
 import { useAuth } from '../context/auth-context.js'
-import { load, save } from '../lib/storage.js'
 import { Reveal } from '../components/Reveal.jsx'
 import { Seo } from '../components/Seo.jsx'
+import { db, firebaseConfigError, isFirebaseConfigured, normalizeDate } from '../lib/firebase.js'
 
 const TIERS = [
   { amount: 250, label: 'Chai & Rant', tag: 'Funds a meme designer for a day.' },
@@ -19,8 +20,6 @@ const ALLOCATION = [
   { label: 'Server bills (wifi, you see)', share: 0.05, color: '#888' },
 ]
 
-const DONATIONS_KEY = 'donations'
-
 function formatCurrency(amount) {
   return new Intl.NumberFormat('en-IN', {
     style: 'currency',
@@ -31,7 +30,10 @@ function formatCurrency(amount) {
 
 export function Donate() {
   const { user } = useAuth()
-  const [donations, setDonations] = useState(() => load(DONATIONS_KEY, []))
+  const [donations, setDonations] = useState([])
+  const [backendError, setBackendError] = useState(() =>
+    isFirebaseConfigured ? '' : firebaseConfigError(),
+  )
   const [selectedTier, setSelectedTier] = useState(750)
   const [customAmount, setCustomAmount] = useState('')
   const [donor, setDonor] = useState(() => ({
@@ -45,8 +47,32 @@ export function Donate() {
   const [confirmation, setConfirmation] = useState(null)
 
   useEffect(() => {
-    save(DONATIONS_KEY, donations)
-  }, [donations])
+    if (!isFirebaseConfigured || !db) return undefined
+    const donationsQuery = query(collection(db, 'donations'), orderBy('createdAt', 'desc'), limit(100))
+    return onSnapshot(
+      donationsQuery,
+      (snapshot) => {
+        const records = snapshot.docs.map((docSnap) => {
+          const data = docSnap.data()
+          return {
+            id: docSnap.id,
+            amount: data.amount || 0,
+            donor: data.donor || 'Anonymous',
+            email: data.email || '',
+            method: data.method || 'upi',
+            recurring: Boolean(data.recurring),
+            message: data.message || '',
+            createdAt: normalizeDate(data.createdAt) || new Date().toISOString(),
+          }
+        })
+        setDonations(records)
+        setBackendError('')
+      },
+      () => {
+        setBackendError('Unable to load donations from Firebase.')
+      },
+    )
+  }, [])
 
   const activeAmount = useMemo(() => {
     if (customAmount) return Number(customAmount) || 0
@@ -70,24 +96,32 @@ export function Donate() {
     }))
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    if (!activeAmount || activeAmount <= 0) return
+    if (!activeAmount || activeAmount <= 0 || !isFirebaseConfigured || !db) return
     const record = {
-      id: `d-${Date.now().toString(36)}`,
       amount: activeAmount,
       donor: donor.name,
       email: donor.email,
       method: donor.method,
       recurring: donor.recurring,
       message: donor.message,
-      createdAt: new Date().toISOString(),
+      userId: user?.id || null,
+      createdAt: serverTimestamp(),
     }
-    setDonations((current) => [record, ...current])
-    setConfirmation(record)
-    setCustomAmount('')
-    setDonor((current) => ({ ...current, message: '' }))
-    window.setTimeout(() => setConfirmation(null), 6000)
+    try {
+      await addDoc(collection(db, 'donations'), record)
+      setConfirmation({
+        ...record,
+        createdAt: new Date().toISOString(),
+      })
+      setCustomAmount('')
+      setDonor((current) => ({ ...current, message: '' }))
+      window.setTimeout(() => setConfirmation(null), 6000)
+      setBackendError('')
+    } catch {
+      setBackendError('Unable to submit donation right now. Please try again.')
+    }
   }
 
   return (
@@ -227,9 +261,9 @@ export function Donate() {
               Donate {formatCurrency(activeAmount || 0)} →
             </button>
             <p className="security-note">
-              🔒 Mock payment for demo. In production this routes through Razorpay/Stripe with
-              webhook-confirmed receipts.
+              🔒 Connected to Firebase Firestore. Add a payment gateway webhook before production.
             </p>
+            {backendError && <p className="auth-error">{backendError}</p>}
           </div>
 
           {confirmation && (

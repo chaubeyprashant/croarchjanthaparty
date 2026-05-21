@@ -1,8 +1,9 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { collection, limit, onSnapshot, orderBy, query } from 'firebase/firestore'
 import { useAuth } from '../context/auth-context.js'
-import { load } from '../lib/storage.js'
 import { Reveal } from '../components/Reveal.jsx'
 import { Seo } from '../components/Seo.jsx'
+import { db, firebaseConfigError, isFirebaseConfigured, normalizeDate } from '../lib/firebase.js'
 
 function formatCurrency(amount) {
   return new Intl.NumberFormat('en-IN', {
@@ -21,10 +22,66 @@ function timeAgo(iso) {
 }
 
 export function Admin() {
-  const { isAdmin, users, promoteRole, removeMember } = useAuth()
+  const { isAdmin, user, users, promoteRole, removeMember } = useAuth()
+  const [donations, setDonations] = useState([])
+  const [threads, setThreads] = useState([])
+  const [backendError, setBackendError] = useState(() =>
+    isFirebaseConfigured ? '' : firebaseConfigError(),
+  )
 
-  const donations = useMemo(() => load('donations', []), [])
-  const threads = useMemo(() => load('forum:threads', []), [])
+  useEffect(() => {
+    if (!isFirebaseConfigured || !db) return undefined
+    const donationsQuery = query(collection(db, 'donations'), orderBy('createdAt', 'desc'), limit(50))
+    return onSnapshot(
+      donationsQuery,
+      (snapshot) => {
+        setDonations(
+          snapshot.docs.map((docSnap) => {
+            const data = docSnap.data()
+            return {
+              id: docSnap.id,
+              donor: data.donor || 'Anonymous',
+              email: data.email || '',
+              amount: data.amount || 0,
+              recurring: Boolean(data.recurring),
+              method: data.method || 'upi',
+              createdAt: normalizeDate(data.createdAt) || new Date().toISOString(),
+            }
+          }),
+        )
+        setBackendError('')
+      },
+      () => {
+        setBackendError('Unable to load donations from Firebase.')
+      },
+    )
+  }, [])
+
+  useEffect(() => {
+    if (!isFirebaseConfigured || !db) return undefined
+    const threadsQuery = query(collection(db, 'threads'), orderBy('createdAt', 'desc'), limit(50))
+    return onSnapshot(
+      threadsQuery,
+      (snapshot) => {
+        setThreads(
+          snapshot.docs.map((docSnap) => {
+            const data = docSnap.data()
+            return {
+              id: docSnap.id,
+              title: data.title || '',
+              category: data.category || 'General',
+              author: data.author || 'Member',
+              votes: data.votes || 0,
+              status: data.status || 'open',
+            }
+          }),
+        )
+      },
+      () => {
+        setBackendError('Unable to load threads from Firebase.')
+      },
+    )
+  }, [])
 
   const stats = useMemo(() => {
     const total = donations.reduce((acc, d) => acc + d.amount, 0)
@@ -56,6 +113,7 @@ export function Admin() {
             Please log in with an admin account to access moderation, members, and donation
             analytics.
           </Reveal>
+          {backendError && <p className="auth-error">{backendError}</p>}
         </section>
       </>
     )
@@ -79,6 +137,7 @@ export function Admin() {
         <Reveal as="p" className="lead" delay={120}>
           Donation ledger, member roster, moderation tools. Role-restricted to admins.
         </Reveal>
+        {backendError && <p className="auth-error">{backendError}</p>}
       </section>
 
       <section className="section">
@@ -110,7 +169,7 @@ export function Admin() {
         <Reveal className="admin-card">
           <header>
             <h2>Donation ledger</h2>
-            <p>Last 8 donations (mock data, persisted in localStorage).</p>
+            <p>Last 8 donations synced from Firebase Firestore.</p>
           </header>
           {donations.length === 0 ? (
             <p className="muted">No donations yet.</p>
@@ -182,7 +241,7 @@ export function Admin() {
                         type="button"
                         className="link danger"
                         onClick={() => removeMember(member.id)}
-                        disabled={member.id === 'admin-1'}
+                        disabled={member.id === user?.id}
                       >
                         Remove
                       </button>

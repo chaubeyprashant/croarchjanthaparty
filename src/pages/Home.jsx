@@ -276,21 +276,6 @@ export function Home() {
         </Reveal>
       </section>
 
-      <section id="founder" className="section founder">
-        <Reveal className="founder-card">
-          <div className="founder-photo" aria-hidden="true" />
-          <div>
-            <p className="founder-label">Founder</p>
-            <h2>Abhijeet Dipke</h2>
-            <p className="founder-role">Founder &amp; Convenor</p>
-            <p>
-              A political party for the lazy, the unemployed, and the chronically correct.
-              Headquartered wherever the wifi works.
-            </p>
-          </div>
-        </Reveal>
-      </section>
-
       <section id="contact" className="section contact">
         <div className="contact-grid">
           <Reveal>

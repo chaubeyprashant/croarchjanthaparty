@@ -30,9 +30,9 @@ export function AuthModal({ mode, onClose, onSwitchMode }) {
     setForm((current) => ({ ...current, [name]: value }))
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    const action = mode === 'signup' ? signUp(form) : signIn(form)
+    const action = mode === 'signup' ? await signUp(form) : await signIn(form)
     if (!action.ok) {
       setError(action.error)
       return
@@ -152,7 +152,7 @@ export function AuthModal({ mode, onClose, onSwitchMode }) {
 
         {mode === 'login' && (
           <p className="auth-hint">
-            Try demo admin: <code>admin@cockroachjantaparty.org</code> / <code>admin</code>
+            Admin access is granted to the email set in <code>VITE_ADMIN_EMAIL</code>.
           </p>
         )}
       </div>

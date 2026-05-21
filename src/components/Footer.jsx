@@ -22,7 +22,7 @@ export function Footer() {
               <Link to="/#manifesto">Manifesto</Link>
             </li>
             <li>
-              <Link to="/#founder">Founder</Link>
+              <Link to="/#contact">Contact</Link>
             </li>
           </ul>
         </div>

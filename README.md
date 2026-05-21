@@ -1,16 +1,51 @@
-# React + Vite
+# Cockroach Janta Party (React + Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Youth movement website with:
+- Firebase Authentication
+- Firestore-backed donations/forum/admin data
+- Route-level SEO + prerendered HTML for key routes
 
-Currently, two official plugins are available:
+## 1) Install
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+```
 
-## React Compiler
+## 2) Configure Firebase
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Create a `.env` file from `.env.example`:
 
-## Expanding the ESLint configuration
+```bash
+cp .env.example .env
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Set:
+- `VITE_FIREBASE_API_KEY`
+- `VITE_FIREBASE_AUTH_DOMAIN`
+- `VITE_FIREBASE_PROJECT_ID`
+- `VITE_FIREBASE_STORAGE_BUCKET`
+- `VITE_FIREBASE_MESSAGING_SENDER_ID`
+- `VITE_FIREBASE_APP_ID`
+- optional: `VITE_ADMIN_EMAIL` (email to auto-assign admin role on first login/signup)
+
+## 3) Firestore security rules
+
+Deploy `firestore.rules` from this repo in Firebase console or CLI.
+
+## 4) Run locally
+
+```bash
+npm run dev
+```
+
+## 5) Production build (with prerender)
+
+```bash
+npm run build
+```
+
+Prerendered output includes:
+- `/`
+- `/donate`
+- `/community`
+- `/admin` (noindex)
