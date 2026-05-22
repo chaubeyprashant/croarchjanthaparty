@@ -1,6 +1,6 @@
 import RootLayout from './RootLayout.jsx'
 import { Home } from './pages/Home.jsx'
-import { Donate } from './pages/Donate.jsx'
+// import { Donate } from './pages/Donate.jsx' // Temporarily disabled
 import { Community } from './pages/Community.jsx'
 import { Admin } from './pages/Admin.jsx'
 import { Complaints } from './pages/Complaints.jsx'
@@ -15,7 +15,7 @@ export const routes = [
     element: <RootLayout />,
     children: [
       { index: true, element: <Home /> },
-      { path: 'donate', element: <Donate /> },
+      // { path: 'donate', element: <Donate /> }, // Temporarily disabled
       { path: 'community', element: <Community /> },
       { path: 'complaints', element: <Complaints /> },
       { path: 'complaints/new', element: <ComplaintCreate /> },

@@ -9,8 +9,8 @@ const manifestoItems = [
     number: '01',
     text: (
       <>
-        If the CJP comes in power, no Chief Justice shall be granted a{' '}
-        <mark>Rajya Sabha seat</mark> as a post-retirement reward.
+        Every public contract above ₹10 lakh will be published in a live dashboard with vendor name,
+        bid details, and delivery status. No file will hide behind &ldquo;technical reasons.&rdquo;
       </>
     ),
   },
@@ -18,9 +18,8 @@ const manifestoItems = [
     number: '02',
     text: (
       <>
-        If any legit vote is deleted, whether in a CJP or opposition-ruled state, the{' '}
-        <mark>CEC shall be arrested under UAPA</mark>, as taking away voting rights of citizens
-        is no less than terrorism.
+        We will launch a nationwide <mark>Public Complaint & Corruption Tracking System</mark> with
+        mandatory status timelines for every registered grievance.
       </>
     ),
   },
@@ -28,9 +27,8 @@ const manifestoItems = [
     number: '03',
     text: (
       <>
-        Women shall receive <mark>50% reservation, not 33%</mark>, without increasing the strength
-        of Parliament. Additionally, <mark>50% of all Cabinet positions</mark> shall be reserved
-        for women.
+        50% representation for women in local leadership councils, party committees, and candidate
+        shortlists — not as token faces, but as decision-makers.
       </>
     ),
   },
@@ -38,9 +36,8 @@ const manifestoItems = [
     number: '04',
     text: (
       <>
-        All media houses owned by{' '}
-        <mark>Ambani and Adani shall have their licences cancelled</mark> to make way for truly
-        independent media. Bank accounts of Godi media anchors shall be investigated.
+        Annual district-level youth budget hearings will be compulsory, and every rupee approved
+        for education, jobs, and skilling will be trackable in public view.
       </>
     ),
   },
@@ -48,8 +45,8 @@ const manifestoItems = [
     number: '05',
     text: (
       <>
-        Any MLA or MP who defects from one party to another shall be barred from contesting
-        elections — and from holding any public office — for a period of <mark>20 years</mark>.
+        Defection for political profit will trigger automatic disqualification and a six-year ban
+        from contesting elections under a strict anti-defection reform law.
       </>
     ),
   },
@@ -117,8 +114,11 @@ export function Home() {
             sponsors. One large, stubborn swarm.
           </Reveal>
           <Reveal delay={240} className="hero-actions">
-            <Link to="/donate" className="btn btn-primary">
+            {/* <Link to="/donate" className="btn btn-primary">
               Donate to the Movement →
+            </Link> */}
+            <Link to="/complaints/new" className="btn btn-primary">
+              Report a Civic Issue →
             </Link>
             <a
               href="#manifesto"
@@ -311,8 +311,7 @@ export function Home() {
             <h3>Three ways to engage.</h3>
             <ul>
               <li>
-                <Link to="/donate">Donate</Link> — keep us independent. Every rupee is logged and
-                allocated transparently.
+                Donations are temporarily paused while we migrate payment infrastructure.
               </li>
               <li>
                 <Link to="/community">Join the forum</Link> — discuss, upvote, and shape the next

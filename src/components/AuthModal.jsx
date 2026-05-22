@@ -64,7 +64,7 @@ export function AuthModal({ mode, onClose, onSwitchMode }) {
         <p className="auth-sub">
           {mode === 'signup'
             ? 'Free, lifelong, revocable only by you. No fees. No selfies with the leader.'
-            : 'Log in to participate in the forum, donate, and track your impact.'}
+            : 'Log in to participate in the forum, file complaints, and track your impact.'}
         </p>
 
         <form className="auth-form" onSubmit={handleSubmit}>

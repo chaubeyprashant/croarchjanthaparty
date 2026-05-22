@@ -36,9 +36,9 @@ export function Footer() {
             <li>
               <Link to="/complaints">Complaints</Link>
             </li>
-            <li>
+            {/* <li>
               <Link to="/donate">Donate</Link>
-            </li>
+            </li> */}
             <li>
               <Link to="/#eligibility">Eligibility</Link>
             </li>

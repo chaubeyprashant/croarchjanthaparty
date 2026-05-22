@@ -42,7 +42,7 @@ export function Header() {
           </a>
           <NavLink to="/community">Community</NavLink>
           <NavLink to="/complaints">Complaints</NavLink>
-          <NavLink to="/donate">Donate</NavLink>
+          {/* <NavLink to="/donate">Donate</NavLink> */}
           {isAdmin && <NavLink to="/admin">Admin</NavLink>}
         </nav>
 
