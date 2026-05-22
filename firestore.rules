@@ -10,6 +10,148 @@ service cloud.firestore {
         && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
     }
 
+    function complaintPath(complaintId) {
+      return /databases/$(database)/documents/complaints/$(complaintId);
+    }
+
+    function isComplaintOwner(complaintId) {
+      return signedIn()
+        && get(complaintPath(complaintId)).data.reporterUserId == request.auth.uid;
+    }
+
+    function isValidIssueType(value) {
+      return [
+        'Corruption',
+        'Bribery',
+        'Potholes',
+        'Road Damage',
+        'Water Leakage',
+        'Garbage Issue',
+        'Construction Defect',
+        'Government Negligence',
+        'Public Misbehavior',
+        'Police Misconduct',
+        'Electricity Issue',
+        'Internet/Utility Issue',
+        'Other',
+      ].hasAny([value]);
+    }
+
+    function isValidUrgency(value) {
+      return ['low', 'medium', 'high', 'emergency'].hasAny([value]);
+    }
+
+    function isValidStatus(value) {
+      return [
+        'submitted',
+        'under_review',
+        'verified',
+        'escalated',
+        'resolved',
+        'rejected',
+      ].hasAny([value]);
+    }
+
+    function isValidLocation(loc) {
+      return loc is map
+        && loc.keys().hasOnly(['state', 'city', 'area', 'address', 'pincode', 'lat', 'lng'])
+        && loc.state is string
+        && loc.city is string
+        && loc.area is string
+        && loc.address is string
+        && loc.pincode is string
+        && (loc.lat == null || loc.lat is number)
+        && (loc.lng == null || loc.lng is number);
+    }
+
+    function isValidComplaintCreate() {
+      return request.resource.data.keys().hasOnly([
+          'referenceId',
+          'issueType',
+          'title',
+          'description',
+          'incidentDate',
+          'department',
+          'officerName',
+          'estimatedImpact',
+          'urgency',
+          'status',
+          'location',
+          'reporterVisibility',
+          'reporterPublic',
+          'reporterUserId',
+          'media',
+          'language',
+          'voiceTranscript',
+          'ai',
+          'supportCount',
+          'commentCount',
+          'createdAt',
+          'updatedAt',
+        ])
+        && request.resource.data.referenceId is string
+        && request.resource.data.title is string
+        && request.resource.data.title.size() >= 5
+        && request.resource.data.title.size() <= 140
+        && request.resource.data.description is string
+        && request.resource.data.description.size() >= 20
+        && request.resource.data.description.size() <= 5000
+        && isValidIssueType(request.resource.data.issueType)
+        && isValidUrgency(request.resource.data.urgency)
+        && request.resource.data.status == 'submitted'
+        && request.resource.data.department is string
+        && request.resource.data.officerName is string
+        && request.resource.data.estimatedImpact is string
+        && request.resource.data.reporterUserId is string
+        && request.resource.data.reporterUserId == request.auth.uid
+        && request.resource.data.reporterVisibility is map
+        && request.resource.data.reporterVisibility.keys().hasOnly(['anonymous'])
+        && request.resource.data.reporterVisibility.anonymous is bool
+        && request.resource.data.reporterPublic is map
+        && request.resource.data.reporterPublic.keys().hasOnly(['name'])
+        && request.resource.data.reporterPublic.name is string
+        && request.resource.data.media is list
+        && request.resource.data.language is string
+        && request.resource.data.voiceTranscript is string
+        && request.resource.data.supportCount == 0
+        && request.resource.data.commentCount == 0
+        && isValidLocation(request.resource.data.location);
+    }
+
+    function complaintImmutableFieldsUnchanged() {
+      return request.resource.data.referenceId == resource.data.referenceId
+        && request.resource.data.issueType == resource.data.issueType
+        && request.resource.data.title == resource.data.title
+        && request.resource.data.description == resource.data.description
+        && request.resource.data.incidentDate == resource.data.incidentDate
+        && request.resource.data.department == resource.data.department
+        && request.resource.data.officerName == resource.data.officerName
+        && request.resource.data.estimatedImpact == resource.data.estimatedImpact
+        && request.resource.data.urgency == resource.data.urgency
+        && request.resource.data.location == resource.data.location
+        && request.resource.data.reporterVisibility == resource.data.reporterVisibility
+        && request.resource.data.reporterPublic == resource.data.reporterPublic
+        && request.resource.data.reporterUserId == resource.data.reporterUserId
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.language == resource.data.language
+        && request.resource.data.voiceTranscript == resource.data.voiceTranscript
+        && request.resource.data.ai == resource.data.ai;
+    }
+
+    function isSafeComplaintMetaUpdate(complaintId) {
+      return request.resource.data.diff(resource.data).changedKeys().hasOnly([
+          'supportCount',
+          'commentCount',
+          'updatedAt',
+          'media',
+        ])
+        && complaintImmutableFieldsUnchanged()
+        && request.resource.data.supportCount >= 0
+        && request.resource.data.commentCount >= 0
+        && (!request.resource.data.diff(resource.data).changedKeys().hasAny(['media'])
+          || isComplaintOwner(complaintId));
+    }
+
     match /users/{userId} {
       allow read: if signedIn();
       allow create: if signedIn() && request.auth.uid == userId;
@@ -28,6 +170,78 @@ service cloud.firestore {
       allow create: if signedIn();
       allow update: if signedIn();
       allow delete: if isAdmin();
+    }
+
+    match /complaints/{complaintId} {
+      allow read: if true;
+      allow create: if signedIn() && isValidComplaintCreate();
+      allow update: if isAdmin() || (signedIn() && isSafeComplaintMetaUpdate(complaintId));
+      allow delete: if isAdmin();
+    }
+
+    match /complaints/{complaintId}/private/{docId} {
+      allow read: if isAdmin() || isComplaintOwner(complaintId);
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(['userId', 'name', 'mobile', 'email', 'createdAt'])
+        && request.resource.data.userId is string
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.name is string
+        && request.resource.data.mobile is string
+        && request.resource.data.email is string;
+      allow update, delete: if isAdmin();
+    }
+
+    match /complaints/{complaintId}/statusHistory/{entryId} {
+      allow read: if true;
+      allow create: if (
+          isAdmin()
+          && request.resource.data.keys().hasOnly(['status', 'note', 'changedBy', 'createdAt'])
+          && isValidStatus(request.resource.data.status)
+          && request.resource.data.note is string
+        ) || (
+          isComplaintOwner(complaintId)
+          && request.resource.data.keys().hasOnly(['status', 'note', 'changedBy', 'createdAt'])
+          && request.resource.data.status == 'submitted'
+          && request.resource.data.note is string
+          && request.resource.data.changedBy == request.auth.uid
+        );
+      allow update, delete: if isAdmin();
+    }
+
+    match /complaints/{complaintId}/comments/{commentId} {
+      allow read: if true;
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(['authorName', 'authorId', 'body', 'createdAt'])
+        && request.resource.data.authorName is string
+        && request.resource.data.authorId == request.auth.uid
+        && request.resource.data.body is string
+        && request.resource.data.body.size() >= 2
+        && request.resource.data.body.size() <= 1000;
+      allow update, delete: if isAdmin();
+    }
+
+    match /complaints/{complaintId}/supports/{supportId} {
+      allow read: if true;
+      allow create, delete: if signedIn() && request.auth.uid == supportId;
+      allow update: if false;
+    }
+
+    match /complaints/{complaintId}/flags/{flagId} {
+      allow read: if isAdmin();
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(['reporterId', 'reporterName', 'reason', 'createdAt'])
+        && request.resource.data.reporterId == request.auth.uid
+        && request.resource.data.reporterName is string
+        && request.resource.data.reason is string
+        && request.resource.data.reason.size() >= 4
+        && request.resource.data.reason.size() <= 240;
+      allow update, delete: if isAdmin();
+    }
+
+    match /adminLogs/{logId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin();
+      allow update, delete: if false;
     }
   }
 }

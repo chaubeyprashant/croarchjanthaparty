@@ -1,0 +1,34 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn()
+        && firestore.get(
+          /databases/(default)/documents/users/$(request.auth.uid)
+        ).data.role == 'admin';
+    }
+
+    function isComplaintOwner(complaintId) {
+      return signedIn()
+        && firestore.get(
+          /databases/(default)/documents/complaints/$(complaintId)
+        ).data.reporterUserId == request.auth.uid;
+    }
+
+    match /complaints/{complaintId}/{fileName} {
+      allow read: if true;
+      allow write: if isAdmin() || isComplaintOwner(complaintId);
+      allow create: if (isAdmin() || isComplaintOwner(complaintId))
+        && request.resource.size < 20 * 1024 * 1024
+        && request.resource.contentType.matches('^(image|video)/.*|application/pdf|text/plain|application/msword|application/vnd.openxmlformats-officedocument.wordprocessingml.document$');
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

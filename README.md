@@ -4,6 +4,7 @@ Youth movement website with:
 - Firebase Authentication
 - Firestore-backed donations/forum/admin data
 - Route-level SEO + prerendered HTML for key routes
+- Public Complaint & Corruption Reporting module
 
 ## 1) Install
 
@@ -32,13 +33,24 @@ Set:
 
 Deploy `firestore.rules` from this repo in Firebase console or CLI.
 
-## 4) Run locally
+```bash
+firebase deploy --only firestore:rules
+```
+
+## 4) Firebase Storage rules (complaint uploads)
+
+Deploy upload rules from this repo:
+
+```bash
+firebase deploy --only storage
+```
+## 5) Run locally
 
 ```bash
 npm run dev
 ```
 
-## 5) Production build (with prerender)
+## 6) Production build (with prerender)
 
 ```bash
 npm run build
@@ -48,4 +60,23 @@ Prerendered output includes:
 - `/`
 - `/donate`
 - `/community`
-- `/admin` (noindex)
+- `/complaints`
+- `/complaints/new`
+- `/complaints/heatmap`
+
+## 7) Complaints module routes
+
+- `/complaints` public issue feed with filters and support
+- `/complaints/new` multi-step complaint wizard with media upload
+- `/complaints/:id` complaint tracking timeline + comments + QR tracking
+- `/complaints/heatmap` civic hotspot board
+- `/admin/complaints` admin moderation console
+
+## 8) Production validation checklist
+
+- Verify authenticated user can submit complaint and gets a `CJP-YYYY-XXXXXX` reference ID.
+- Verify anonymous complaint hides reporter identity in public feed/detail.
+- Verify media upload succeeds and file links render in complaint detail.
+- Verify admin can update complaint status and timeline updates immediately.
+- Verify comments/support controls work and counters update.
+- Re-run `npm run lint` and `npm run build` before deploying.

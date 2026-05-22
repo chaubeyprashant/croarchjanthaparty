@@ -34,6 +34,9 @@ export function Footer() {
               <Link to="/community">Community</Link>
             </li>
             <li>
+              <Link to="/complaints">Complaints</Link>
+            </li>
+            <li>
               <Link to="/donate">Donate</Link>
             </li>
             <li>
