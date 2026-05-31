@@ -7,48 +7,77 @@ import { Seo } from '../components/Seo.jsx'
 const manifestoItems = [
   {
     number: '01',
+    icon: '💼',
+    title: 'Jobs & Accountability',
     text: (
       <>
-        Every public contract above ₹10 lakh will be published in a live dashboard with vendor name,
-        bid details, and delivery status. No file will hide behind &ldquo;technical reasons.&rdquo;
+        Real data on unemployment. <mark>Real action</mark> — not rebrand slogans on ₹10 crore
+        billboards funded by our taxes.
       </>
     ),
   },
   {
     number: '02',
+    icon: '📚',
+    title: 'Education Reform',
     text: (
       <>
-        We will launch a nationwide <mark>Public Complaint & Corruption Tracking System</mark> with
-        mandatory status timelines for every registered grievance.
+        Full accountability on <mark>NEET paper leaks</mark>. Resign, Education Minister. Scrap CBSE
+        rechecking fees immediately.
       </>
     ),
   },
   {
     number: '03',
+    icon: '🎙️',
+    title: 'Press Freedom',
     text: (
       <>
-        50% representation for women in local leadership councils, party committees, and candidate
-        shortlists — not as token faces, but as decision-makers.
+        A PM who faces real press. 12 years. <mark>Zero press conferences</mark>. Democracy means
+        answering questions you didn&apos;t write.
       </>
     ),
   },
   {
     number: '04',
+    icon: '⚖️',
+    title: 'Judicial Dignity',
     text: (
       <>
-        Annual district-level youth budget hearings will be compulsory, and every rupee approved
-        for education, jobs, and skilling will be trackable in public view.
+        Citizens are not cockroaches. Not parasites. Unemployment is not a character flaw.{' '}
+        <mark>Dignity is constitutional</mark>.
       </>
     ),
   },
   {
     number: '05',
+    icon: '🔍',
+    title: 'Transparency Now',
     text: (
       <>
-        Defection for political profit will trigger automatic disqualification and a six-year ban
-        from contesting elections under a strict anti-defection reform law.
+        Where did <mark>PM CARES funds</mark> go? We ask loudly, in writing, repeatedly, with RTIs —
+        until someone answers honestly.
       </>
     ),
+  },
+]
+
+const originTimeline = [
+  {
+    date: '15 May 2026',
+    text: 'CJI Surya Kant calls unemployed youth "cockroaches and parasites" in a Supreme Court hearing.',
+  },
+  {
+    date: '16 May 2026',
+    text: 'Abhijeet Dipke launches CJP on X. 40,000 followers in 48 hours. The party anthem goes live.',
+  },
+  {
+    date: '18 May 2026',
+    text: '80,000 sign-ups. TMC MPs Mahua Moitra and Kirti Azad endorse the movement publicly.',
+  },
+  {
+    date: '21 May 2026',
+    text: '1 lakh+ members. Reports of contesting the Bankipur Assembly by-election in Bihar emerge.',
   },
 ]
 
@@ -103,15 +132,15 @@ export function Home() {
         <div className="hero-inner">
           <Reveal as="p" className="badge">
             <span className="pulse" aria-hidden="true" />
-            Party launch · Live since yesterday
+            Official Platform · Est. 16 May 2026
           </Reveal>
           <Reveal as="h1" delay={80}>
-            Voice of the <em className="accent-orange">Lazy &</em>{' '}
-            <em className="accent-green">Unemployed.</em>
+            Cockroach <em className="accent-orange">Janta</em>{' '}
+            <em className="accent-green">Party.</em>
           </Reveal>
           <Reveal as="p" delay={160} className="lead">
-            A political party for the people the system forgot to count. Five demands. Zero
-            sponsors. One large, stubborn swarm.
+            A party for the people the system forgot to count. Five demands. Zero sponsors. One
+            stubborn swarm. They called us cockroaches. We made it our name.
           </Reveal>
           <Reveal delay={240} className="hero-actions">
             {/* <Link to="/donate" className="btn btn-primary">
@@ -135,8 +164,8 @@ export function Home() {
 
         <Reveal delay={320} className="hero-stats">
           <div>
-            <strong>72,481</strong>
-            <span>Members in 48 hours</span>
+            <strong>2,04,000+</strong>
+            <span>Members & counting</span>
           </div>
           <div>
             <strong>5</strong>
@@ -189,6 +218,27 @@ export function Home() {
         <blockquote>&ldquo;They tried to step on us. We came back.&rdquo;</blockquote>
       </section>
 
+      <section id="origin" className="section origin">
+        <div className="section-head">
+          <Reveal as="h2">
+            One Word Changed <em>Everything.</em>
+          </Reveal>
+          <Reveal as="p" delay={80}>
+            On 15 May 2026, the Chief Justice of India compared unemployed youth to
+            &ldquo;cockroaches&rdquo; in open court. Within 24 hours, a tweet became a movement.
+          </Reveal>
+        </div>
+
+        <ol className="origin-timeline">
+          {originTimeline.map((item, index) => (
+            <Reveal as="li" className="origin-item" key={item.date} delay={index * 70}>
+              <span className="origin-date">{item.date}</span>
+              <p>{item.text}</p>
+            </Reveal>
+          ))}
+        </ol>
+      </section>
+
       <section id="vision" className="section vision">
         <div className="section-head">
           <Reveal as="h2">
@@ -223,7 +273,7 @@ export function Home() {
       <section id="manifesto" className="section manifesto">
         <div className="section-head light">
           <Reveal as="h2">
-            The <em>Manifesto.</em>
+            Five Demands. <em>Zero Compromises.</em>
           </Reveal>
           <Reveal as="p" delay={80}>
             Read it once. Read it twice. Then send it to someone who needs to read it.
@@ -233,8 +283,13 @@ export function Home() {
         <ol className="manifesto-list">
           {manifestoItems.map((item, index) => (
             <Reveal as="li" key={item.number} delay={index * 60}>
-              <span className="manifesto-number">{item.number}</span>
-              <p>{item.text}</p>
+              <span className="manifesto-number">
+                {item.number} <span aria-hidden="true">{item.icon}</span>
+              </span>
+              <div>
+                <h3 className="manifesto-title">{item.title}</h3>
+                <p>{item.text}</p>
+              </div>
             </Reveal>
           ))}
         </ol>

@@ -13,14 +13,17 @@ export function Header() {
   const openAuth = (mode) => setAuthMode(mode)
   const closeAuth = () => setAuthMode(null)
 
-  const handleManifesto = (event) => {
+  const scrollToSection = (event, id) => {
     event.preventDefault()
     if (location.pathname !== '/') {
-      navigate('/#manifesto')
+      navigate(`/#${id}`)
       return
     }
-    document.getElementById('manifesto')?.scrollIntoView({ behavior: 'smooth' })
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
   }
+
+  const handleManifesto = (event) => scrollToSection(event, 'manifesto')
+  const handleOrigin = (event) => scrollToSection(event, 'origin')
 
   return (
     <>
@@ -37,6 +40,9 @@ export function Header() {
           <NavLink to="/" end>
             Home
           </NavLink>
+          <a href="#origin" onClick={handleOrigin}>
+            Origin
+          </a>
           <a href="#manifesto" onClick={handleManifesto}>
             Manifesto
           </a>

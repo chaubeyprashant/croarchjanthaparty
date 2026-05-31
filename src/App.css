@@ -677,6 +677,49 @@ main {
   text-underline-offset: 0.15em;
 }
 
+.manifesto-title {
+  font-size: clamp(1.1rem, 2.4vw, 1.5rem);
+  letter-spacing: -0.01em;
+  margin-bottom: 0.35rem;
+}
+
+/* ==========================================================================
+   Origin story timeline
+   ========================================================================== */
+.origin-timeline {
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+}
+
+.origin-item {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: 1.25rem;
+  padding: 1.25rem 0;
+  border-top: 2px solid var(--ink);
+  align-items: start;
+}
+
+.origin-item:last-child {
+  border-bottom: 2px solid var(--ink);
+}
+
+.origin-date {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+
+.origin-item p {
+  line-height: 1.6;
+  font-size: 1.02rem;
+}
+
 .req-list {
   display: grid;
   gap: 0.85rem;
@@ -1757,6 +1800,7 @@ select:focus-visible {
   .site-header { flex-wrap: wrap; gap: 0.75rem; }
   .req-card { grid-template-columns: 1fr; gap: 0.5rem; }
   .manifesto-list li { grid-template-columns: 1fr; gap: 0.35rem; }
+  .origin-item { grid-template-columns: 1fr; gap: 0.4rem; }
   .site-footer { grid-template-columns: 1fr; }
   .admin-stats { grid-template-columns: 1fr; }
   .auth-row { grid-template-columns: 1fr; }
