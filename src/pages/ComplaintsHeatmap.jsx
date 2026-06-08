@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Reveal } from '../components/Reveal.jsx'
 import { Seo } from '../components/Seo.jsx'
+import { breadcrumbJsonLd } from '../lib/seo-schema.js'
 import { subscribeComplaints } from '../lib/complaints.js'
 
 function groupHotspots(rows) {
@@ -52,9 +53,15 @@ export function ComplaintsHeatmap() {
   return (
     <>
       <Seo
-        title="Civic Heatmap"
-        description="Track complaint hotspots and high-risk civic clusters across locations."
+        title="Civic Heatmap — Complaint Hotspots in India"
+        description="Live civic heatmap showing corruption hotspots, pothole clusters, and high-complaint zones across Indian cities."
+        keywords="civic heatmap India, corruption hotspots map, complaint clusters, pothole map India, public accountability dashboard"
         canonicalPath="/complaints/heatmap"
+        jsonLd={breadcrumbJsonLd([
+          { name: 'Home', path: '/' },
+          { name: 'Public Complaints', path: '/complaints' },
+          { name: 'Civic Heatmap', path: '/complaints/heatmap' },
+        ])}
       />
       <section className="section page-head">
         <Reveal as="p" className="eyebrow">

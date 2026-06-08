@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { Reveal } from '../components/Reveal.jsx'
 import { Seo } from '../components/Seo.jsx'
 import { useAuth } from '../context/auth-context.js'
+import { absoluteUrl } from '../lib/site.js'
 import {
   addComplaintComment,
   reportComplaintAsFake,
@@ -58,7 +59,7 @@ export function ComplaintDetail() {
 
   const shareLinks = useMemo(() => {
     if (!complaint) return {}
-    const pageUrl = `https://cockroachjantaparty.org/complaints/${complaint.id}`
+    const pageUrl = absoluteUrl(`/complaints/${complaint.id}`)
     const message = encodeURIComponent(
       `Complaint ${complaint.referenceId}: ${complaint.title} (${complaint.city}, ${complaint.state})`,
     )

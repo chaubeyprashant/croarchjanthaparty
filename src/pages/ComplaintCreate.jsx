@@ -4,6 +4,7 @@ import { doc, updateDoc } from 'firebase/firestore'
 import { ComplaintWizard } from '../components/complaints/ComplaintWizard.jsx'
 import { Reveal } from '../components/Reveal.jsx'
 import { Seo } from '../components/Seo.jsx'
+import { breadcrumbJsonLd } from '../lib/seo-schema.js'
 import { useAuth } from '../context/auth-context.js'
 import { createComplaint } from '../lib/complaints.js'
 import { db, firebaseConfigError, isFirebaseConfigured } from '../lib/firebase.js'
@@ -68,9 +69,15 @@ export function ComplaintCreate() {
   return (
     <>
       <Seo
-        title="File Complaint"
-        description="Submit a corruption or civic issue report with evidence, location pin, and anonymous privacy controls."
+        title="File a Complaint — Corruption & Civic Reporting"
+        description="Submit a corruption or civic issue report with photo evidence, location pin, anonymous privacy controls, and a trackable reference ID."
+        keywords="file corruption complaint India, civic complaint form, anonymous reporting, pothole complaint online, bribery report"
         canonicalPath="/complaints/new"
+        jsonLd={breadcrumbJsonLd([
+          { name: 'Home', path: '/' },
+          { name: 'Public Complaints', path: '/complaints' },
+          { name: 'File Complaint', path: '/complaints/new' },
+        ])}
       />
       <section className="section page-head">
         <Reveal as="p" className="eyebrow">

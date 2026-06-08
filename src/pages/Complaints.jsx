@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Reveal } from '../components/Reveal.jsx'
 import { Seo } from '../components/Seo.jsx'
+import { breadcrumbJsonLd } from '../lib/seo-schema.js'
 import { ISSUE_TYPES, subscribeComplaints } from '../lib/complaints.js'
 import { firebaseConfigError, isFirebaseConfigured } from '../lib/firebase.js'
 
@@ -88,10 +89,14 @@ export function Complaints() {
   return (
     <>
       <Seo
-        title="Public Complaints"
-        description="Report corruption and civic issues, track complaint statuses, and support local accountability efforts."
-        keywords="public complaints India, corruption reporting, civic issue reporting, pothole report, government negligence complaint"
+        title="Public Complaints — Report Corruption & Civic Issues"
+        description="Report corruption, potholes, road damage, bribery, and government negligence. Track complaint status publicly and support community accountability across India."
+        keywords="public complaints India, corruption reporting, civic issue reporting, pothole report, RTI complaint, government negligence, CJP complaints"
         canonicalPath="/complaints"
+        jsonLd={breadcrumbJsonLd([
+          { name: 'Home', path: '/' },
+          { name: 'Public Complaints', path: '/complaints' },
+        ])}
       />
       <section className="section page-head">
         <Reveal as="p" className="eyebrow">

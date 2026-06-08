@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /admin/
 
-Sitemap: https://cockroachjantaparty.org/sitemap.xml
+Sitemap: https://cockroachjanthaparty.com/sitemap.xml

@@ -13,6 +13,8 @@ import {
 import { useAuth } from '../context/auth-context.js'
 import { Reveal } from '../components/Reveal.jsx'
 import { Seo } from '../components/Seo.jsx'
+import { breadcrumbJsonLd } from '../lib/seo-schema.js'
+import { absoluteUrl } from '../lib/site.js'
 import { db, firebaseConfigError, isFirebaseConfigured, normalizeDate } from '../lib/firebase.js'
 
 const CATEGORIES = ['All', 'General', 'Campaigns', 'Volunteers', 'Legal', 'Research', 'Funding']
@@ -169,17 +171,23 @@ export function Community() {
   return (
     <>
       <Seo
-        title="Community Forum"
-        description="Join the Cockroach Janta Party community forum to debate policy, organize campaigns, and collaborate with volunteers across cities."
-        keywords="community forum, political discussion, campaign volunteers, grassroots organizing, Cockroach Janta Party"
+        title="Community Forum — Join the Swarm"
+        description="Join the Cockroach Janta Party community forum. Debate policy, organize campaigns, upvote ideas, and collaborate with volunteers across India."
+        keywords="CJP community forum, political discussion India, campaign volunteers, grassroots organizing, Main Bhi Cockroach community"
         canonicalPath="/community"
-        jsonLd={{
-          '@context': 'https://schema.org',
-          '@type': 'DiscussionForumPosting',
-          headline: 'Cockroach Janta Party Community Forum',
-          url: 'https://cockroachjantaparty.org/community',
-          articleSection: 'Community',
-        }}
+        jsonLd={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'DiscussionForumPosting',
+            headline: 'Cockroach Janta Party Community Forum',
+            url: absoluteUrl('/community'),
+            articleSection: 'Community',
+          },
+          breadcrumbJsonLd([
+            { name: 'Home', path: '/' },
+            { name: 'Community', path: '/community' },
+          ]),
+        ]}
       />
       <section className="section page-head">
         <Reveal as="p" className="eyebrow">

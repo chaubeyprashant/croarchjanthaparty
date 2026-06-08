@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { Reveal } from '../components/Reveal.jsx'
 import { Logo } from '../components/Logo.jsx'
 import { Seo } from '../components/Seo.jsx'
+import { SITE_NAME, SITE_URL, absoluteUrl } from '../lib/site.js'
 
 const manifestoItems = [
   {
@@ -101,11 +102,66 @@ export function Home() {
   const location = useLocation()
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: 'Cockroach Janta Party',
-    url: 'https://cockroachjantaparty.org/',
-    description:
-      'A youth-led political movement for the people the system forgot to count. Five demands. Zero sponsors.',
+    '@graph': [
+      {
+        '@type': 'WebSite',
+        '@id': `${SITE_URL}/#website`,
+        name: SITE_NAME,
+        url: absoluteUrl('/'),
+        description:
+          'India\'s satirical people\'s movement. Five demands. Zero sponsors. Join the swarm.',
+        inLanguage: 'en-IN',
+        publisher: { '@id': `${SITE_URL}/#organization` },
+      },
+      {
+        '@type': 'Organization',
+        '@id': `${SITE_URL}/#organization`,
+        name: SITE_NAME,
+        alternateName: ['CJP', 'Cockroach Janata Party', 'कॉकरोच जनता पार्टी'],
+        url: absoluteUrl('/'),
+        logo: absoluteUrl('/favicon.svg'),
+        image: absoluteUrl('/og-image.svg'),
+        foundingDate: '2026-05-16',
+        slogan: 'Main Bhi Cockroach — मैं भी कॉकरोच',
+      },
+      {
+        '@type': 'FAQPage',
+        mainEntity: [
+          {
+            '@type': 'Question',
+            name: 'What is the Cockroach Janta Party?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'The Cockroach Janta Party (CJP) is a satirical online political movement in India that uses humour to comment on democracy and encourage civic participation.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'What does Main Bhi Cockroach mean?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Main Bhi Cockroach (मैं भी कॉकरोच) means "I am also a cockroach." It is the rallying slogan symbolising the resilience of ordinary Indian citizens.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'How do I join the Cockroach Janta Party?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'You can join for free by registering on the website. Create an account, join the community forum, and file civic complaints through the public complaint system.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'What are the five demands of CJP?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Jobs & Accountability, Education Reform, Press Freedom, Judicial Dignity, and Transparency Now — including RTI accountability and NEET reform.',
+            },
+          },
+        ],
+      },
+    ],
   }
 
   useEffect(() => {
@@ -122,9 +178,9 @@ export function Home() {
   return (
     <>
       <Seo
-        title="Voice of the Lazy & Unemployed"
-        description="A youth-led political movement for the people the system forgot to count. Read the manifesto, join the community, and support independent grassroots action."
-        keywords="Cockroach Janta Party, manifesto, youth movement India, political satire, grassroots politics"
+        title="Main Bhi Cockroach — India's Satirical People's Movement"
+        description="Cockroach Janta Party (CJP): five demands, zero sponsors, one stubborn swarm. Read the manifesto, join the community, and file civic complaints across India."
+        keywords="Cockroach Janta Party, CJP India, Main Bhi Cockroach, मैं भी कॉकरोच, कॉकरोच जनता पार्टी, manifesto, youth movement India, political satire, civic complaints"
         canonicalPath="/"
         jsonLd={jsonLd}
       />
