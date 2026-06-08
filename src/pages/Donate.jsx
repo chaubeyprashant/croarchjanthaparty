@@ -137,7 +137,7 @@ export function Donate() {
           name: 'Donate to Cockroach Janta Party',
           target: {
             '@type': 'EntryPoint',
-            urlTemplate: 'https://cockroachjantaparty.org/donate',
+            urlTemplate: 'https://cockroachjanthaparty.com/donate',
           },
         }}
       />

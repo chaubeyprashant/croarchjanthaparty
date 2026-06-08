@@ -401,14 +401,14 @@ export function Home() {
             <ul className="contact-list">
               <li>
                 <span>Email</span>
-                <a href="mailto:contact@cockroachjantaparty.org">
-                  contact@cockroachjantaparty.org
+                <a href="mailto:contact@cockroachjanthaparty.com">
+                  contact@cockroachjanthaparty.com
                 </a>
               </li>
               <li>
                 <span>Press</span>
-                <a href="mailto:contact@cockroachjantaparty.org">
-                  contact@cockroachjantaparty.org
+                <a href="mailto:contact@cockroachjanthaparty.com">
+                  contact@cockroachjanthaparty.com
                 </a>
               </li>
               <li>
@@ -429,7 +429,7 @@ export function Home() {
                 campaign.
               </li>
               <li>
-                <a href="mailto:contact@cockroachjantaparty.org">Volunteer</a> — write, design,
+                <a href="mailto:contact@cockroachjanthaparty.com">Volunteer</a> — write, design,
                 organize, or just send a meme.
               </li>
             </ul>
