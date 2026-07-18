@@ -101,7 +101,7 @@ export function ArticleDetail() {
 
   return (
     <div className="bg-paper text-ink" style={{ minHeight: '100vh', paddingBottom: '4rem' }}>
-      <div style={{ height: '40vh', minHeight: '300px', backgroundColor: '#eee', backgroundImage: \`url(\${article.imageUrl})\`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}>
+      <div style={{ height: '40vh', minHeight: '300px', backgroundColor: '#eee', backgroundImage: `url(${article.imageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center', position: 'relative' }}>
         <div style={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)' }} />
       </div>
       
@@ -124,7 +124,7 @@ export function ArticleDetail() {
           </div>
           
           <div className="article-content" style={{ fontSize: '1.1rem', lineHeight: 1.8 }}>
-            {article.content.split('\\n').map((paragraph, i) => {
+            {article.content.split('\n').map((paragraph, i) => {
               if (!paragraph.trim()) return null
               if (paragraph.startsWith('###')) {
                 return <h3 key={i} className="condensed" style={{ fontSize: '2rem', marginTop: '2.5rem', marginBottom: '1rem' }}>{paragraph.replace('### ', '')}</h3>
