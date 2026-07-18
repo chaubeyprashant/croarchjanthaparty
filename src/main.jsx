@@ -6,7 +6,7 @@ import { Analytics } from '@vercel/analytics/react'
 import './index.css'
 import { routes } from './routes.jsx'
 
-const hydrationData = window.__staticRouterHydrationData
+const hydrationData = typeof window !== 'undefined' ? window.__staticRouterHydrationData : undefined;
 const router = createBrowserRouter(routes, { hydrationData })
 const head = createHead()
 
