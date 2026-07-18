@@ -56,7 +56,7 @@ export default function Donate() {
                 <div className="wise-info">
                   <p>Wise (formerly TransferWise) is highly recommended for international transfers as it offers real exchange rates and low fees.</p>
                 </div>
-                <button className="btn-pay condensed" onClick={() => window.open('https://wise.com', '_blank')}>PAY NOW WITH WISE</button>
+                <button className="btn-pay condensed" onClick={() => window.open('https://wise.com/pay/business/prashantchaubey?utm_source=open_link', '_blank')}>PAY NOW WITH WISE</button>
               </div>
             )}
           </div>
