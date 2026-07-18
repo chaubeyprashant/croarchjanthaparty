@@ -50,6 +50,7 @@ export default function Header() {
           <Link to="/articles" className="nav-link condensed">Articles</Link>
           <Link to="/gallery" className="nav-link condensed">Gallery</Link>
           <Link to="/members" className="nav-link condensed">Members</Link>
+          <Link to="/chat" className="nav-link condensed" style={{ color: 'var(--red)' }}>Live Chat</Link>
           <Link to="/complaints" className="nav-link condensed">Issues</Link>
           <Link to="/cockroach-tracker" className="nav-link condensed">Tracker</Link>
           <Link to="/protests" className="nav-link condensed">Protests</Link>

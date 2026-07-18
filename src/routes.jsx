@@ -10,6 +10,9 @@ import { Join } from './pages/Join.jsx'
 import { Login } from './pages/Login.jsx'
 import { AdminComplaints } from './pages/AdminComplaints.jsx'
 import { ComplaintsHeatmap } from './pages/ComplaintsHeatmap.jsx'
+import { Articles } from './pages/Articles.jsx'
+import { ArticleDetail } from './pages/ArticleDetail.jsx'
+import { Chat } from './pages/Chat.jsx'
 
 export const routes = [
   {
@@ -27,6 +30,9 @@ export const routes = [
       { path: 'complaints/:id', element: <ComplaintDetail /> },
       { path: 'admin', element: <Admin /> },
       { path: 'admin/complaints', element: <AdminComplaints /> },
+      { path: 'articles', element: <Articles /> },
+      { path: 'articles/:id', element: <ArticleDetail /> },
+      { path: 'chat', element: <Chat /> },
       { path: '*', element: <Home /> },
     ],
   },

@@ -189,11 +189,18 @@ export function ComplaintWizard({ user, onSubmit, submitting, uploadProgress, ba
   })
 
   useEffect(() => {
+    if (successMessage) {
+      setForm(INITIAL_STATE)
+      try {
+        window.localStorage.removeItem(DRAFT_KEY)
+      } catch {}
+      return
+    }
     try {
       const serializable = { ...form, mediaFiles: [] }
       window.localStorage.setItem(DRAFT_KEY, JSON.stringify(serializable))
     } catch {}
-  }, [form])
+  }, [form, successMessage])
 
   const steps = [
     { title: "What's the issue?", content: <StepDetails form={form} setForm={setForm} /> },
