@@ -20,7 +20,7 @@ export default function Footer() {
             <div className="link-group">
               <h3 className="condensed">ACTIONS</h3>
               <Link to="/join">Join the Party</Link>
-              <Link to="/voice">Raise an Issue</Link>
+              <Link to="/complaints">Raise an Issue</Link>
               <Link to="/donate">Support the Dev</Link>
             </div>
             <div className="link-group">

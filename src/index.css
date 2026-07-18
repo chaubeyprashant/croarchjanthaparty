@@ -6,6 +6,13 @@
   --ink: #1a1108;
   --ink-muted: rgba(26, 17, 8, 0.6);
   --gold: #c9a227;
+  
+  /* Aliases and missing colors */
+  --cream: var(--paper);
+  --brown: var(--ink-muted);
+  --brown-dark: var(--ink);
+  --orange: #d97706;
+  --green: #15803d;
 }
 
 *,

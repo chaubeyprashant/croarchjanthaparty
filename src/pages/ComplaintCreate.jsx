@@ -19,6 +19,8 @@ export function ComplaintCreate() {
   )
   const [uploadProgress, setUploadProgress] = useState({})
 
+  const [successMessage, setSuccessMessage] = useState('')
+
   const handleSubmit = async (form) => {
     if (!isAuthenticated) {
       setBackendError('Please log in first to submit a complaint.')
@@ -27,6 +29,7 @@ export function ComplaintCreate() {
     if (!isFirebaseConfigured || !db) return
     setSubmitting(true)
     setBackendError('')
+    setSuccessMessage('')
     try {
       const result = await createComplaint(
         {
@@ -58,8 +61,12 @@ export function ComplaintCreate() {
         await updateDoc(doc(db, 'complaints', result.id), { media: uploaded })
       }
 
-      navigate(`/complaints/${result.id}`)
+      setSuccessMessage('Complaint submitted successfully! Redirecting...')
+      setTimeout(() => {
+        navigate(`/complaints/${result.id}`)
+      }, 2500)
     } catch (error) {
+      console.error(error)
       setBackendError(error?.message || 'Unable to submit complaint right now.')
     } finally {
       setSubmitting(false)
@@ -110,6 +117,8 @@ export function ComplaintCreate() {
             onSubmit={handleSubmit}
             submitting={submitting}
             uploadProgress={uploadProgress}
+            backendError={backendError}
+            successMessage={successMessage}
           />
         </Reveal>
       </section>

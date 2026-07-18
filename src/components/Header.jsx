@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
 import { Globe, Menu } from 'lucide-react';
+import { useAuth } from '../context/auth-context.js';
 import './Header.css';
 
 export default function Header() {
+  const { isAuthenticated, user, signOut, authReady } = useAuth();
+  
   return (
     <header className="header bg-paper border-ink">
       <div className="header-container">
@@ -47,7 +50,7 @@ export default function Header() {
           <Link to="/articles" className="nav-link condensed">Articles</Link>
           <Link to="/gallery" className="nav-link condensed">Gallery</Link>
           <Link to="/members" className="nav-link condensed">Members</Link>
-          <Link to="/voice" className="nav-link condensed">Issues</Link>
+          <Link to="/complaints" className="nav-link condensed">Issues</Link>
           <Link to="/cockroach-tracker" className="nav-link condensed">Tracker</Link>
           <Link to="/protests" className="nav-link condensed">Protests</Link>
           <a href="/#contact" className="nav-link condensed">Contact</a>
@@ -64,8 +67,19 @@ export default function Header() {
             </button>
           </div>
           <Link to="/donate" className="btn-support condensed text-ink border-ink">SUPPORT THE DEV →</Link>
-          <Link to="/join" className="btn-join condensed bg-ink text-paper">JOIN THE PARTY →</Link>
-          <Link to="/voice/raise" className="btn-raise condensed text-ink border-ink">RAISE AN ISSUE →</Link>
+          {!authReady ? (
+            <div className="btn-join condensed bg-ink text-paper" style={{ opacity: 0.7, padding: '0.5rem 1rem' }}>LOADING...</div>
+          ) : isAuthenticated ? (
+            <button onClick={signOut} className="btn-join condensed bg-ink text-paper" style={{ border: 'none', cursor: 'pointer' }}>
+              LOG OUT ({user?.name?.split(' ')[0]})
+            </button>
+          ) : (
+            <>
+              <Link to="/login" className="nav-link condensed" style={{ padding: '0.5rem 1rem' }}>LOG IN</Link>
+              <Link to="/join" className="btn-join condensed bg-ink text-paper">JOIN THE PARTY →</Link>
+            </>
+          )}
+          <Link to="/complaints/new" className="btn-raise condensed text-ink border-ink">RAISE AN ISSUE →</Link>
           <button className="mobile-menu-btn text-ink" aria-label="Toggle menu">
             <Menu size={22} />
           </button>

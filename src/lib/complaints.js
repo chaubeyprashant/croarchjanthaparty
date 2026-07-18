@@ -142,6 +142,14 @@ export async function createComplaint(payload, user) {
     email: payload.reporter?.email || '',
     createdAt: serverTimestamp(),
   })
+  
+  // Sync the complaint with the user's personal collection
+  await setDoc(doc(db, 'users', user.id, 'complaints', complaintRef.id), {
+    referenceId,
+    title: complaint.title,
+    status: complaint.status,
+    createdAt: serverTimestamp(),
+  })
   await addDoc(collection(db, 'complaints', complaintRef.id, 'statusHistory'), {
     status: 'submitted',
     note: 'Complaint submitted by citizen.',

@@ -6,6 +6,8 @@ import { Admin } from './pages/Admin.jsx'
 import { Complaints } from './pages/Complaints.jsx'
 import { ComplaintCreate } from './pages/ComplaintCreate.jsx'
 import { ComplaintDetail } from './pages/ComplaintDetail.jsx'
+import { Join } from './pages/Join.jsx'
+import { Login } from './pages/Login.jsx'
 import { AdminComplaints } from './pages/AdminComplaints.jsx'
 import { ComplaintsHeatmap } from './pages/ComplaintsHeatmap.jsx'
 
@@ -15,6 +17,8 @@ export const routes = [
     element: <RootLayout />,
     children: [
       { index: true, element: <Home /> },
+      { path: 'join', element: <Join /> },
+      { path: 'login', element: <Login /> },
       { path: 'donate', element: <Donate /> },
       { path: 'community', element: <Community /> },
       { path: 'complaints', element: <Complaints /> },
