@@ -13,15 +13,7 @@
         }
       ]
     },
-    {
-      "source": "/(.*\\.(svg|png|jpg|jpeg|webp|ico|xml|txt|webmanifest))",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=86400"
-        }
-      ]
-    },
+
     {
       "source": "/(.*)",
       "headers": [
