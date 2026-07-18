@@ -1,0 +1,127 @@
+.donate-page {
+  padding: 4rem 1rem;
+  min-height: 80vh;
+}
+
+.donate-container {
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
+.donate-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.donate-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.donate-subtitle {
+  font-size: 1.125rem;
+  opacity: 0.8;
+  line-height: 1.6;
+}
+
+.donate-box {
+  background-color: var(--paper-soft);
+  border: 2px solid var(--ink);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 4px 4px 0 var(--gold);
+}
+
+.donate-tabs {
+  display: flex;
+  border-bottom: 2px solid var(--ink);
+}
+
+.donate-tab {
+  flex: 1;
+  padding: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.donate-tab:first-child {
+  border-right: 2px solid var(--ink);
+}
+
+.donate-tab:hover {
+  background-color: rgba(26, 17, 8, 0.05);
+}
+
+.donate-tab.active {
+  background-color: var(--gold);
+}
+
+.donate-content {
+  padding: 2rem;
+  text-align: center;
+}
+
+.donate-content h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.donate-content p {
+  margin-bottom: 2rem;
+  opacity: 0.8;
+}
+
+.qr-container {
+  width: 250px;
+  height: 250px;
+  margin: 0 auto 1.5rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 2px solid var(--ink);
+}
+
+.qr-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wise-info {
+  margin: 0 auto 2rem;
+  padding: 1.5rem;
+  background-color: var(--paper);
+  border: 2px dashed var(--ink);
+  border-radius: 0.5rem;
+  text-align: center;
+  font-size: 1.125rem;
+}
+
+.btn-pay {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background-color: var(--ink);
+  color: var(--paper);
+  font-size: 1.125rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-pay:hover {
+  background-color: var(--gold);
+  color: var(--ink);
+}
+
+.donate-disclaimer {
+  padding: 1.5rem 2rem;
+  background-color: rgba(26, 17, 8, 0.05);
+  border-top: 1px solid rgba(26, 17, 8, 0.1);
+  font-size: 0.875rem;
+  text-align: center;
+}
