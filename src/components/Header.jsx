@@ -45,8 +45,6 @@ export default function Header() {
           </div>
         </Link>
         <nav className="desktop-nav">
-          <a href="/#vision" className="nav-link condensed">Vision</a>
-          <a href="/#manifesto" className="nav-link condensed">Manifesto</a>
           <Link to="/articles" className="nav-link condensed">Articles</Link>
           <Link to="/gallery" className="nav-link condensed">Gallery</Link>
           <Link to="/members" className="nav-link condensed">Members</Link>
@@ -54,7 +52,6 @@ export default function Header() {
           <Link to="/complaints" className="nav-link condensed">Issues</Link>
           <Link to="/cockroach-tracker" className="nav-link condensed">Tracker</Link>
           <Link to="/protests" className="nav-link condensed">Protests</Link>
-          <a href="/#contact" className="nav-link condensed">Contact</a>
         </nav>
         <div className="header-actions">
           <div className="lang-selector">
@@ -67,7 +64,6 @@ export default function Header() {
               </svg>
             </button>
           </div>
-          <Link to="/donate" className="btn-support condensed text-ink border-ink">SUPPORT THE DEV →</Link>
           {!authReady ? (
             <div className="btn-join condensed bg-ink text-paper" style={{ opacity: 0.7, padding: '0.5rem 1rem' }}>LOADING...</div>
           ) : isAuthenticated ? (
@@ -80,7 +76,7 @@ export default function Header() {
               <Link to="/join" className="btn-join condensed bg-ink text-paper">JOIN THE PARTY →</Link>
             </>
           )}
-          <Link to="/complaints/new" className="btn-raise condensed text-ink border-ink">RAISE AN ISSUE →</Link>
+          <Link to="/complaints/new" className="btn-raise condensed text-ink border-ink">FILE COMPLAINT →</Link>
           <button className="mobile-menu-btn text-ink" aria-label="Toggle menu">
             <Menu size={22} />
           </button>
