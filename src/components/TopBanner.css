@@ -1,0 +1,28 @@
+.top-banner {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(244, 235, 215, 0.1);
+}
+
+.top-banner-overflow {
+  overflow: hidden;
+}
+
+.top-banner-track {
+  animation-duration: 30s;
+}
+
+.top-banner-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 1.5rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+  .top-banner-item {
+    font-size: 0.875rem;
+  }
+}

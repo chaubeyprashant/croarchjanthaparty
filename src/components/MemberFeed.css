@@ -1,0 +1,123 @@
+.member-feed {
+  position: relative;
+  border-top: 1px solid rgba(26, 17, 8, 0.1);
+  border-bottom: 1px solid rgba(26, 17, 8, 0.1);
+  overflow: hidden;
+  padding: 0.5rem 0;
+}
+
+.member-fade-left, .member-fade-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3rem;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.member-fade-left {
+  left: 0;
+  background: linear-gradient(to right, var(--paper-soft), transparent);
+}
+
+.member-fade-right {
+  right: 0;
+  background: linear-gradient(to left, var(--paper-soft), transparent);
+}
+
+.live-indicator {
+  display: none;
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--ink);
+  color: var(--paper);
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.125rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+@media (min-width: 640px) {
+  .live-indicator {
+    display: flex;
+  }
+}
+
+.live-dot {
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 9999px;
+  background-color: var(--gold);
+  box-shadow: 0 0 6px rgba(201, 162, 39, 0.9);
+}
+
+.live-text {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.member-track {
+  animation-duration: 90s;
+}
+
+@media (min-width: 640px) {
+  .member-track {
+    padding-left: 10rem;
+  }
+}
+
+.member-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.25rem 0.75rem;
+  margin: 0 0.25rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(26, 17, 8, 0.1);
+  white-space: nowrap;
+}
+
+.member-avatar {
+  position: relative;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-width: 1.5px;
+  border-style: solid;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  flex-shrink: 0;
+}
+
+.member-initials {
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  font-size: 0.7rem;
+  position: relative;
+  z-index: 10;
+}
+
+.member-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.member-name {
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.member-loc {
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}

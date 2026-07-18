@@ -1,82 +1,76 @@
-import { useState } from 'react'
-import { NavLink, useLocation, useNavigate } from 'react-router-dom'
-import { Logo } from './Logo.jsx'
-import { useAuth } from '../context/auth-context.js'
-import { AuthModal } from './AuthModal.jsx'
+import { Link } from 'react-router-dom';
+import { Globe, Menu } from 'lucide-react';
+import './Header.css';
 
-export function Header() {
-  const { isAuthenticated, isAdmin, user, signOut } = useAuth()
-  const [authMode, setAuthMode] = useState(null)
-  const location = useLocation()
-  const navigate = useNavigate()
-
-  const openAuth = (mode) => setAuthMode(mode)
-  const closeAuth = () => setAuthMode(null)
-
-  const scrollToSection = (event, id) => {
-    event.preventDefault()
-    if (location.pathname !== '/') {
-      navigate(`/#${id}`)
-      return
-    }
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-  }
-
-  const handleManifesto = (event) => scrollToSection(event, 'manifesto')
-  const handleOrigin = (event) => scrollToSection(event, 'origin')
-
+export default function Header() {
   return (
-    <>
-      <header className="site-header">
-        <NavLink to="/" className="brand">
-          <Logo />
-          <div>
-            <strong>COCKROACH JANTA PARTY</strong>
-            <span>कॉकरोच जनता पार्टी · Est. 2026</span>
+    <header className="header bg-paper border-ink">
+      <div className="header-container">
+        <Link to="/" className="logo-group">
+          <svg width="48" height="48" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The Cockroach Janta Party emblem" className="logo-svg">
+            <circle cx="100" cy="100" r="96" fill="#F4EBD7"></circle>
+            <circle cx="100" cy="100" r="96" fill="none" stroke="#1A1108" strokeWidth="6"></circle>
+            <circle cx="100" cy="100" r="85" fill="none" stroke="#C9A227" strokeWidth="1.6" strokeDasharray="3 4"></circle>
+            <circle cx="100" cy="100" r="76" fill="none" stroke="#1A1108" strokeWidth="1.8"></circle>
+            <g fill="#C9A227">
+              <polygon points="100,18 101.8,22.6 106.8,22.6 102.7,25.4 104.4,30 100,27.2 95.6,30 97.3,25.4 93.2,22.6 98.2,22.6"></polygon>
+              <polygon points="100,182 101.8,177.4 106.8,177.4 102.7,174.6 104.4,170 100,172.8 95.6,170 97.3,174.6 93.2,177.4 98.2,177.4"></polygon>
+              <circle cx="18" cy="100" r="2.4"></circle>
+              <circle cx="182" cy="100" r="2.4"></circle>
+            </g>
+            <g transform="translate(100 107)" fill="#1A1108" stroke="#1A1108" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M -3 -34 Q -15 -50 -30 -56" fill="none" strokeWidth="3"></path>
+              <path d="M 3 -34 Q 15 -50 30 -56" fill="none" strokeWidth="3"></path>
+              <path d="M -12 -10 Q -28 -16 -42 -22" fill="none" strokeWidth="3.6"></path>
+              <path d="M -16 2 Q -34 4 -48 2" fill="none" strokeWidth="3.6"></path>
+              <path d="M -12 20 Q -28 30 -40 38" fill="none" strokeWidth="3.6"></path>
+              <path d="M 12 -10 Q 28 -16 42 -22" fill="none" strokeWidth="3.6"></path>
+              <path d="M 16 2 Q 34 4 48 2" fill="none" strokeWidth="3.6"></path>
+              <path d="M 12 20 Q 28 30 40 38" fill="none" strokeWidth="3.6"></path>
+              <ellipse cx="0" cy="-28" rx="8" ry="6"></ellipse>
+              <path d="M -14 -22 Q -14 -8 -10 -4 L 10 -4 Q 14 -8 14 -22 Q 0 -27 -14 -22 Z"></path>
+              <path d="M -16 -5 Q -22 4 -18 18 Q -12 32 0 34 Q 12 32 18 18 Q 22 4 16 -5 Z"></path>
+              <line x1="0" y1="-3" x2="0" y2="32" stroke="#F4EBD7" strokeWidth="1.4" opacity="0.55"></line>
+            </g>
+          </svg>
+          <div className="logo-text">
+            <div className="logo-title condensed text-ink">
+              <div>THE COCKROACH</div>
+              <div>JANTA PARTY</div>
+            </div>
+            <div className="logo-subtitle text-ink-muted">कॉकरोच जनता पार्टी · Est. 2026</div>
           </div>
-        </NavLink>
-
-        <nav className="site-nav" aria-label="Primary">
-          <NavLink to="/" end>
-            Home
-          </NavLink>
-          <a href="#origin" onClick={handleOrigin}>
-            Origin
-          </a>
-          <a href="#manifesto" onClick={handleManifesto}>
-            Manifesto
-          </a>
-          <NavLink to="/community">Community</NavLink>
-          <NavLink to="/complaints">Complaints</NavLink>
-          {/* <NavLink to="/donate">Donate</NavLink> */}
-          {isAdmin && <NavLink to="/admin">Admin</NavLink>}
+        </Link>
+        <nav className="desktop-nav">
+          <a href="/#vision" className="nav-link condensed">Vision</a>
+          <a href="/#manifesto" className="nav-link condensed">Manifesto</a>
+          <Link to="/articles" className="nav-link condensed">Articles</Link>
+          <Link to="/gallery" className="nav-link condensed">Gallery</Link>
+          <Link to="/members" className="nav-link condensed">Members</Link>
+          <Link to="/voice" className="nav-link condensed">Issues</Link>
+          <Link to="/cockroach-tracker" className="nav-link condensed">Tracker</Link>
+          <Link to="/protests" className="nav-link condensed">Protests</Link>
+          <a href="/#contact" className="nav-link condensed">Contact</a>
         </nav>
-
         <div className="header-actions">
-          {isAuthenticated ? (
-            <>
-              <span className="header-user" title={user.email}>
-                {user.name?.split(' ')[0]}
-                {isAdmin && <em className="role-tag">admin</em>}
-              </span>
-              <button type="button" className="btn btn-ghost" onClick={signOut}>
-                Sign out
-              </button>
-            </>
-          ) : (
-            <>
-              <button type="button" className="btn btn-ghost" onClick={() => openAuth('login')}>
-                Log in
-              </button>
-              <button type="button" className="btn btn-dark" onClick={() => openAuth('signup')}>
-                Join the Party
-              </button>
-            </>
-          )}
+          <div className="lang-selector">
+            <button type="button" className="lang-btn condensed text-ink">
+              <Globe size={14} />
+              <span className="lang-text">English</span>
+              <span className="lang-text-mobile">EN</span>
+              <svg aria-hidden="true" width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <path d="M2 3.5 L5 6.5 L8 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"></path>
+              </svg>
+            </button>
+          </div>
+          <Link to="/donate" className="btn-support condensed text-ink border-ink">SUPPORT THE DEV →</Link>
+          <Link to="/join" className="btn-join condensed bg-ink text-paper">JOIN THE PARTY →</Link>
+          <Link to="/voice/raise" className="btn-raise condensed text-ink border-ink">RAISE AN ISSUE →</Link>
+          <button className="mobile-menu-btn text-ink" aria-label="Toggle menu">
+            <Menu size={22} />
+          </button>
         </div>
-      </header>
-
-      {authMode && <AuthModal mode={authMode} onClose={closeAuth} onSwitchMode={openAuth} />}
-    </>
-  )
+      </div>
+    </header>
+  );
 }

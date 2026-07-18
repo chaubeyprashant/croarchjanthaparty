@@ -1,83 +1,44 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import './Footer.css';
 
-export function Footer() {
+export default function Footer() {
   return (
-    <>
-      <footer className="site-footer">
-        <div>
-          <p className="footer-brand">Cockroach Janta Party</p>
-          <p>
-            A political party for the lazy, the unemployed, and the chronically correct.
-            Headquartered wherever the wifi works.
-          </p>
+    <footer className="footer bg-ink text-paper">
+      <div className="footer-container">
+        <div className="footer-top">
+          <div className="footer-brand">
+            <h2 className="condensed footer-title">THE COCKROACH JANTA PARTY</h2>
+            <p className="footer-tagline text-paper/70">Main Bhi Cockroach.</p>
+          </div>
+          <div className="footer-links">
+            <div className="link-group">
+              <h3 className="condensed">NAVIGATION</h3>
+              <a href="/#vision">Vision</a>
+              <a href="/#manifesto">Manifesto</a>
+              <Link to="/articles">Articles</Link>
+            </div>
+            <div className="link-group">
+              <h3 className="condensed">ACTIONS</h3>
+              <Link to="/join">Join the Party</Link>
+              <Link to="/voice">Raise an Issue</Link>
+              <Link to="/donate">Support the Dev</Link>
+            </div>
+            <div className="link-group">
+              <h3 className="condensed">LEGAL</h3>
+              <Link to="/disclaimer">Disclaimer</Link>
+              <Link to="/privacy">Privacy Policy</Link>
+              <a href="mailto:contact@thecockroachjantaparty.org.in">Contact Us</a>
+            </div>
+          </div>
         </div>
-
-        <div>
-          <h4>The Party</h4>
-          <ul>
-            <li>
-              <Link to="/#vision">Vision</Link>
-            </li>
-            <li>
-              <Link to="/#manifesto">Manifesto</Link>
-            </li>
-            <li>
-              <Link to="/#contact">Contact</Link>
-            </li>
-          </ul>
+        <div className="footer-bottom">
+          <p>© {new Date().getFullYear()} The Cockroach Janta Party. This is a satirical political movement.</p>
+          <div className="social-links">
+            <a href="https://www.instagram.com/cockroachjantaparty/" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a href="https://x.com/Cockroachisback" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
+          </div>
         </div>
-
-        <div>
-          <h4>Get involved</h4>
-          <ul>
-            <li>
-              <Link to="/community">Community</Link>
-            </li>
-            <li>
-              <Link to="/complaints">Complaints</Link>
-            </li>
-            {/* <li>
-              <Link to="/donate">Donate</Link>
-            </li> */}
-            <li>
-              <Link to="/#eligibility">Eligibility</Link>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h4>Follow</h4>
-          <ul>
-            <li>
-              <a href="https://x.com" target="_blank" rel="noreferrer">
-                Twitter / X
-              </a>
-            </li>
-            <li>
-              <a href="https://instagram.com" target="_blank" rel="noreferrer">
-                Instagram
-              </a>
-            </li>
-            <li>
-              <a href="https://youtube.com" target="_blank" rel="noreferrer">
-                YouTube
-              </a>
-            </li>
-            <li>
-              <a href="https://telegram.org" target="_blank" rel="noreferrer">
-                Telegram
-              </a>
-            </li>
-          </ul>
-        </div>
-      </footer>
-
-      <div className="footer-meta">
-        <a href="#privacy">Privacy</a>
-        <a href="#press">Press</a>
-        <Link to="/#contact">Contact</Link>
-        <span>© {new Date().getFullYear()} Cockroach Janta Party</span>
       </div>
-    </>
-  )
+    </footer>
+  );
 }
