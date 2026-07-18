@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { collection, query, orderBy, limit, onSnapshot, addDoc, serverTimestamp } from 'firebase/firestore'
 import { db, isFirebaseConfigured, normalizeDate } from '../lib/firebase.js'
-import { useAuth } from '../context/AuthContext.jsx'
+import { useAuth } from '../context/auth-context.js'
 import { Send } from 'lucide-react'
 import './Chat.css'
 
