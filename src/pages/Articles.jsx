@@ -66,7 +66,7 @@ export function Articles() {
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2rem' }}>
               {articles.map(article => (
-                <Link to={`/articles/${article.id}`} key={article.id} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Link to={`/blog/${article.id}`} key={article.id} style={{ textDecoration: 'none', color: 'inherit' }}>
                   <div style={{ border: '2px solid var(--ink)', borderRadius: '8px', overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column', transition: 'transform 0.2s', backgroundColor: '#fff' }} onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-4px)'} onMouseLeave={e => e.currentTarget.style.transform = 'none'}>
                     <div style={{ height: '200px', backgroundColor: '#eee', backgroundImage: `url(${article.imageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center', borderBottom: '2px solid var(--ink)' }} />
                     <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>

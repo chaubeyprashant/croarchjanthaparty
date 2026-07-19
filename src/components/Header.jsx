@@ -47,7 +47,7 @@ export default function Header() {
           </div>
         </Link>
         <nav className="desktop-nav">
-          <Link to="/articles" className="nav-link condensed">Articles</Link>
+          <Link to="/blog" className="nav-link condensed">Blog</Link>
           <Link to="/gallery" className="nav-link condensed">Gallery</Link>
           <Link to="/members" className="nav-link condensed">Members</Link>
           <Link to="/chat" className="nav-link condensed" style={{ color: 'var(--red)' }}>Live Chat</Link>
@@ -97,7 +97,7 @@ export default function Header() {
       {isMobileMenuOpen && (
         <div className="mobile-menu bg-paper border-ink">
           <nav className="mobile-nav">
-            <Link to="/articles" className="mobile-nav-link condensed" onClick={() => setIsMobileMenuOpen(false)}>Articles</Link>
+            <Link to="/blog" className="mobile-nav-link condensed" onClick={() => setIsMobileMenuOpen(false)}>Blog</Link>
             <Link to="/gallery" className="mobile-nav-link condensed" onClick={() => setIsMobileMenuOpen(false)}>Gallery</Link>
             <Link to="/members" className="mobile-nav-link condensed" onClick={() => setIsMobileMenuOpen(false)}>Members</Link>
             <Link to="/chat" className="mobile-nav-link condensed" style={{ color: 'var(--red)' }} onClick={() => setIsMobileMenuOpen(false)}>Live Chat</Link>
