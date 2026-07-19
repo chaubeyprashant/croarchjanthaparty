@@ -82,6 +82,7 @@ export default function Header() {
             </>
           )}
           <Link to="/complaints/new" className="btn-raise condensed text-ink border-ink">FILE COMPLAINT →</Link>
+          <Link to="/donate" className="btn-raise condensed text-ink border-ink" style={{ marginLeft: '0.5rem', backgroundColor: 'var(--gold)' }}>SUPPORT DEV ☕</Link>
           <button 
             className="mobile-menu-btn text-ink" 
             aria-label="Toggle menu"
@@ -120,6 +121,7 @@ export default function Header() {
                   <Link to="/join" className="btn-join condensed bg-ink text-paper" style={{ display: 'inline-flex' }} onClick={() => setIsMobileMenuOpen(false)}>JOIN THE PARTY →</Link>
                 </>
               )}
+              <Link to="/donate" className="btn-raise condensed text-ink border-ink" style={{ display: 'inline-flex', marginTop: '0.5rem', justifyContent: 'center', backgroundColor: 'var(--gold)' }} onClick={() => setIsMobileMenuOpen(false)}>SUPPORT DEV ☕</Link>
             </div>
           </nav>
         </div>
