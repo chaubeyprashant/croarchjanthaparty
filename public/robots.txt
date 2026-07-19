@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin
 Disallow: /admin/
 
-Sitemap: https://cockroachjanthaparty.com/sitemap.xml
+Sitemap: https://www.cockroachjanthaparty.com/sitemap.xml
