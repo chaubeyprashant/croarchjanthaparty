@@ -2,15 +2,17 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '../context/auth-context.js'
 
 export function AuthModal({ mode, onClose, onSwitchMode }) {
-  const { signIn, signUp } = useAuth()
+  const { signIn, signUp, resetPassword } = useAuth()
   const [form, setForm] = useState({
     name: '',
     email: '',
     password: '',
     city: '',
     state: '',
+    phone: '',
   })
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
 
   useEffect(() => {
     const onKey = (event) => {
@@ -22,6 +24,7 @@ export function AuthModal({ mode, onClose, onSwitchMode }) {
 
   const switchMode = (next) => {
     setError('')
+    setSuccess('')
     onSwitchMode(next)
   }
 
@@ -32,6 +35,19 @@ export function AuthModal({ mode, onClose, onSwitchMode }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+    setError('')
+    setSuccess('')
+    
+    if (mode === 'reset') {
+      const action = await resetPassword(form.email)
+      if (!action.ok) {
+        setError(action.error)
+      } else {
+        setSuccess('Password reset email sent. Check your inbox.')
+      }
+      return
+    }
+
     const action = mode === 'signup' ? await signUp(form) : await signIn(form)
     if (!action.ok) {
       setError(action.error)
@@ -48,22 +64,22 @@ export function AuthModal({ mode, onClose, onSwitchMode }) {
         </button>
         <p className="badge">
           <span className="pulse" />
-          {mode === 'signup' ? 'New Member' : 'Returning Member'}
+          {mode === 'signup' ? 'New Member' : mode === 'reset' ? 'Reset Password' : 'Returning Member'}
         </p>
         <h2>
           {mode === 'signup' ? (
-            <>
-              Join the <em>swarm.</em>
-            </>
+            <>Join the <em>swarm.</em></>
+          ) : mode === 'reset' ? (
+            <>Forgot <em>Password?</em></>
           ) : (
-            <>
-              Welcome <em>back.</em>
-            </>
+            <>Welcome <em>back.</em></>
           )}
         </h2>
         <p className="auth-sub">
           {mode === 'signup'
             ? 'Free, lifelong, revocable only by you. No fees. No selfies with the leader.'
+            : mode === 'reset'
+            ? 'Enter your email below to receive a password reset link.'
             : 'Log in to participate in the forum, file complaints, and track your impact.'}
         </p>
 
@@ -94,19 +110,46 @@ export function AuthModal({ mode, onClose, onSwitchMode }) {
               autoComplete="email"
             />
           </label>
-          <label>
-            Password
-            <input
-              type="password"
-              name="password"
-              required
-              minLength={4}
-              value={form.password}
-              onChange={handleChange}
-              placeholder="At least 4 characters"
-              autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
-            />
-          </label>
+          {mode === 'signup' && (
+            <label>
+              Phone Number
+              <input
+                type="tel"
+                name="phone"
+                value={form.phone}
+                onChange={handleChange}
+                placeholder="Add phone number"
+                autoComplete="tel"
+              />
+            </label>
+          )}
+          {mode !== 'reset' && (
+            <label>
+              Password
+              <input
+                type="password"
+                name="password"
+                required
+                minLength={4}
+                value={form.password}
+                onChange={handleChange}
+                placeholder="At least 4 characters"
+                autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
+              />
+              {mode === 'login' && (
+                <div style={{ textAlign: 'right', marginTop: '0.25rem' }}>
+                  <button
+                    type="button"
+                    className="link"
+                    style={{ fontSize: '0.75rem' }}
+                    onClick={() => switchMode('reset')}
+                  >
+                    Forgot password?
+                  </button>
+                </div>
+              )}
+            </label>
+          )}
           {mode === 'signup' && (
             <div className="auth-row">
               <label>
@@ -133,20 +176,21 @@ export function AuthModal({ mode, onClose, onSwitchMode }) {
           )}
 
           {error && <p className="auth-error">{error}</p>}
+          {success && <p className="auth-success" style={{ color: 'var(--green)', fontSize: '0.875rem', marginTop: '0.5rem' }}>{success}</p>}
 
           <button type="submit" className="btn btn-primary">
-            {mode === 'signup' ? 'Create account' : 'Log in'} →
+            {mode === 'signup' ? 'Create account' : mode === 'reset' ? 'Send reset link' : 'Log in'} →
           </button>
         </form>
 
         <p className="auth-switch">
-          {mode === 'signup' ? 'Already a member?' : 'New here?'}{' '}
+          {mode === 'signup' ? 'Already a member?' : mode === 'reset' ? 'Remembered your password?' : 'New here?'}{' '}
           <button
             type="button"
             className="link"
-            onClick={() => switchMode(mode === 'signup' ? 'login' : 'signup')}
+            onClick={() => switchMode(mode === 'signup' ? 'login' : mode === 'reset' ? 'login' : 'signup')}
           >
-            {mode === 'signup' ? 'Log in instead' : 'Create an account'}
+            {mode === 'signup' ? 'Log in instead' : mode === 'reset' ? 'Back to login' : 'Create an account'}
           </button>
         </p>
 

@@ -122,3 +122,29 @@
   background-color: rgba(26, 17, 8, 0.2);
   border-radius: 4px;
 }
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .chat-header {
+    padding: 1rem;
+  }
+  
+  .chat-messages {
+    padding: 1rem;
+  }
+  
+  .chat-input-area {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .chat-send-btn {
+    padding: 0.75rem;
+    width: 100%;
+  }
+  
+  .message-bubble {
+    max-width: 85%;
+  }
+}

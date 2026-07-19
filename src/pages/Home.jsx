@@ -1,11 +1,24 @@
+import { useState } from 'react';
 import MemberFeed from '../components/MemberFeed';
+import { MarchJoinModal } from '../components/MarchJoinModal.jsx';
 import './Home.css';
 import { Link } from 'react-router-dom';
 
 export default function Home() {
+  const [isMarchModalOpen, setIsMarchModalOpen] = useState(false);
   return (
     <div className="home-page">
       <MemberFeed />
+      
+      <div className="campaign-banner bg-gold text-ink">
+        <div className="campaign-banner-container">
+          <div className="campaign-banner-content">
+            <h2 className="condensed">20 JULY: MARCH TO PARLIAMENT</h2>
+            <p>Standing in solidarity with Sonam Wangchuk for Ladakh's rights.</p>
+          </div>
+          <button onClick={() => setIsMarchModalOpen(true)} className="btn-campaign condensed bg-ink text-paper" style={{ cursor: 'pointer' }}>JOIN THE MOVEMENT</button>
+        </div>
+      </div>
       
       <section className="hero-section">
         <div className="hero-container">
@@ -98,6 +111,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <MarchJoinModal isOpen={isMarchModalOpen} onClose={() => setIsMarchModalOpen(false)} />
     </div>
   );
 }

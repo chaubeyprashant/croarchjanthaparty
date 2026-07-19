@@ -10,7 +10,7 @@ export function Login() {
       <AuthModal 
         mode="login" 
         onClose={() => navigate('/')} 
-        onSwitchMode={(mode) => navigate('/' + (mode === 'signup' ? 'join' : mode))} 
+        onSwitchMode={(mode) => navigate('/' + (mode === 'signup' ? 'join' : mode === 'reset' ? 'reset' : 'login'))} 
       />
     </>
   );

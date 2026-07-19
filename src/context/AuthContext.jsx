@@ -5,6 +5,7 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
+  sendPasswordResetEmail,
 } from 'firebase/auth'
 import {
   collection,
@@ -36,6 +37,7 @@ function mapUserDoc(docSnap) {
     email: data.email || '',
     city: data.city || '',
     state: data.state || '',
+    phone: data.phone || '',
     role: data.role || 'member',
     joinedAt: normalizeDate(data.joinedAt) || new Date().toISOString(),
   }
@@ -83,6 +85,7 @@ export function AuthProvider({ children }) {
           role: data.role || 'member',
           city: data.city || '',
           state: data.state || '',
+          phone: data.phone || '',
           joinedAt: normalizeDate(data.joinedAt) || new Date().toISOString(),
         })
         setAuthReady(true)
@@ -95,6 +98,7 @@ export function AuthProvider({ children }) {
           role: 'member',
           city: '',
           state: '',
+          phone: '',
           joinedAt: new Date().toISOString(),
         })
         setAuthReady(true)
@@ -132,7 +136,7 @@ export function AuthProvider({ children }) {
   )
 
   const signUp = useCallback(
-    async ({ name, email, password, city, state }) => {
+    async ({ name, email, password, city, state, phone }) => {
       if (!isFirebaseConfigured || !auth || !db) {
         return { ok: false, error: firebaseConfigError() }
       }
@@ -149,6 +153,7 @@ export function AuthProvider({ children }) {
             email: normalized,
             city: (city || '').trim(),
             state: (state || '').trim(),
+            phone: (phone || '').trim(),
             role,
             joinedAt: serverTimestamp(),
           })
@@ -182,6 +187,32 @@ export function AuthProvider({ children }) {
     setUsers([])
   }, [])
 
+  const resetPassword = useCallback(async (email) => {
+    if (!isFirebaseConfigured || !auth) {
+      return { ok: false, error: firebaseConfigError() }
+    }
+    if (!email) {
+      return { ok: false, error: 'Please enter your email address.' }
+    }
+    try {
+      await sendPasswordResetEmail(auth, email)
+      return { ok: true }
+    } catch (error) {
+      return { ok: false, error: 'Unable to send password reset email.' }
+    }
+  }, [])
+
+  const updateProfile = useCallback(async (userId, updates) => {
+    if (!db || !userId) return { ok: false, error: 'Not authenticated' }
+    try {
+      await updateDoc(doc(db, 'users', userId), updates)
+      setSession(current => current && current.id === userId ? { ...current, ...updates } : current)
+      return { ok: true }
+    } catch (error) {
+      return { ok: false, error: 'Failed to update profile' }
+    }
+  }, [])
+
   const promoteRole = useCallback(async (userId, role) => {
     if (!db) return
     await updateDoc(doc(db, 'users', userId), { role })
@@ -207,6 +238,8 @@ export function AuthProvider({ children }) {
       signIn,
       signUp,
       signOut,
+      resetPassword,
+      updateProfile,
       promoteRole,
       removeMember,
     }),
@@ -218,6 +251,8 @@ export function AuthProvider({ children }) {
       signIn,
       signUp,
       signOut,
+      resetPassword,
+      updateProfile,
       promoteRole,
       removeMember,
     ],

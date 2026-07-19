@@ -13,6 +13,8 @@ import { ComplaintsHeatmap } from './pages/ComplaintsHeatmap.jsx'
 import { Articles } from './pages/Articles.jsx'
 import { ArticleDetail } from './pages/ArticleDetail.jsx'
 import { Chat } from './pages/Chat.jsx'
+import { Reset } from './pages/Reset.jsx'
+import { Profile } from './pages/Profile.jsx'
 
 export const routes = [
   {
@@ -22,6 +24,8 @@ export const routes = [
       { index: true, element: <Home /> },
       { path: 'join', element: <Join /> },
       { path: 'login', element: <Login /> },
+      { path: 'reset', element: <Reset /> },
+      { path: 'profile', element: <Profile /> },
       { path: 'donate', element: <Donate /> },
       { path: 'community', element: <Community /> },
       { path: 'complaints', element: <Complaints /> },

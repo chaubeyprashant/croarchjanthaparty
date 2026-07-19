@@ -1,0 +1,103 @@
+.march-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(26, 17, 8, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 1rem;
+}
+
+.march-modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 28rem;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  border: 2px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--gold);
+}
+
+.march-modal-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.march-modal-content h2 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+
+.march-modal-sub {
+  font-size: 0.95rem;
+  opacity: 0.8;
+  line-height: 1.5;
+}
+
+.march-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.march-modal-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.march-modal-form input {
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--ink);
+  border-radius: 0.25rem;
+  font-family: inherit;
+  font-size: 1rem;
+  background-color: var(--paper-soft);
+  transition: border-color 0.15s ease;
+}
+
+.march-modal-form input:focus {
+  outline: none;
+  border-color: var(--gold);
+  background-color: var(--paper);
+}
+
+.march-modal-status {
+  padding: 0.75rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.march-modal-status.error {
+  background-color: rgba(220, 38, 38, 0.1);
+  color: #dc2626;
+  border: 1px solid rgba(220, 38, 38, 0.2);
+}
+
+.march-modal-status.success {
+  background-color: rgba(21, 128, 61, 0.1);
+  color: var(--green);
+  border: 1px solid rgba(21, 128, 61, 0.2);
+}
+
+.march-modal-login-prompt {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  text-align: center;
+  margin-top: 1rem;
+}

@@ -1,10 +1,12 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Globe, Menu } from 'lucide-react';
+import { Globe, Menu, X } from 'lucide-react';
 import { useAuth } from '../context/auth-context.js';
 import './Header.css';
 
 export default function Header() {
   const { isAuthenticated, user, signOut, authReady } = useAuth();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   return (
     <header className="header bg-paper border-ink">
@@ -67,9 +69,12 @@ export default function Header() {
           {!authReady ? (
             <div className="btn-join condensed bg-ink text-paper" style={{ opacity: 0.7, padding: '0.5rem 1rem' }}>LOADING...</div>
           ) : isAuthenticated ? (
-            <button onClick={signOut} className="btn-join condensed bg-ink text-paper" style={{ border: 'none', cursor: 'pointer' }}>
-              LOG OUT ({user?.name?.split(' ')[0]})
-            </button>
+            <>
+              <Link to="/profile" className="nav-link condensed" style={{ padding: '0.5rem 1rem' }}>PROFILE</Link>
+              <button onClick={signOut} className="btn-join condensed bg-ink text-paper" style={{ border: 'none', cursor: 'pointer' }}>
+                LOG OUT
+              </button>
+            </>
           ) : (
             <>
               <Link to="/login" className="nav-link condensed" style={{ padding: '0.5rem 1rem' }}>LOG IN</Link>
@@ -77,11 +82,48 @@ export default function Header() {
             </>
           )}
           <Link to="/complaints/new" className="btn-raise condensed text-ink border-ink">FILE COMPLAINT →</Link>
-          <button className="mobile-menu-btn text-ink" aria-label="Toggle menu">
-            <Menu size={22} />
+          <button 
+            className="mobile-menu-btn text-ink" 
+            aria-label="Toggle menu"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </div>
+      
+      {/* Mobile Menu Dropdown */}
+      {isMobileMenuOpen && (
+        <div className="mobile-menu bg-paper border-ink">
+          <nav className="mobile-nav">
+            <Link to="/articles" className="mobile-nav-link condensed" onClick={() => setIsMobileMenuOpen(false)}>Articles</Link>
+            <Link to="/gallery" className="mobile-nav-link condensed" onClick={() => setIsMobileMenuOpen(false)}>Gallery</Link>
+            <Link to="/members" className="mobile-nav-link condensed" onClick={() => setIsMobileMenuOpen(false)}>Members</Link>
+            <Link to="/chat" className="mobile-nav-link condensed" style={{ color: 'var(--red)' }} onClick={() => setIsMobileMenuOpen(false)}>Live Chat</Link>
+            <Link to="/complaints" className="mobile-nav-link condensed" onClick={() => setIsMobileMenuOpen(false)}>Issues</Link>
+            <Link to="/cockroach-tracker" className="mobile-nav-link condensed" onClick={() => setIsMobileMenuOpen(false)}>Tracker</Link>
+            <Link to="/protests" className="mobile-nav-link condensed" onClick={() => setIsMobileMenuOpen(false)}>Protests</Link>
+            
+            <div className="mobile-menu-actions">
+              {!authReady ? (
+                <div className="btn-join condensed bg-ink text-paper" style={{ display: 'inline-flex', opacity: 0.7, padding: '0.75rem 1rem' }}>LOADING...</div>
+              ) : isAuthenticated ? (
+                <>
+                  <Link to="/profile" className="mobile-nav-link condensed" onClick={() => setIsMobileMenuOpen(false)}>PROFILE</Link>
+                  <button onClick={() => { signOut(); setIsMobileMenuOpen(false); }} className="btn-join condensed bg-ink text-paper" style={{ display: 'inline-flex', border: 'none', cursor: 'pointer', marginTop: '0.5rem' }}>
+                    LOG OUT
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" className="mobile-nav-link condensed" onClick={() => setIsMobileMenuOpen(false)}>LOG IN</Link>
+                  <Link to="/join" className="btn-join condensed bg-ink text-paper" style={{ display: 'inline-flex' }} onClick={() => setIsMobileMenuOpen(false)}>JOIN THE PARTY →</Link>
+                </>
+              )}
+            </div>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
