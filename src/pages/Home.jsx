@@ -19,6 +19,17 @@ export default function Home() {
           <button onClick={() => setIsMarchModalOpen(true)} className="btn-campaign condensed bg-ink text-paper" style={{ cursor: 'pointer' }}>JOIN THE MOVEMENT</button>
         </div>
       </div>
+
+      <div className="brutality-report-banner bg-ink text-paper">
+        <div className="brutality-report-container">
+          <div className="brutality-report-content">
+            <h2 className="condensed text-gold">REPORT POLICE BRUTALITY</h2>
+            <p>Were you beaten or harassed by police while peacefully protesting? Share your evidence (images, location, state, city) with us.</p>
+            <p className="text-gold" style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>We will look into this and provide justification.</p>
+          </div>
+          <Link to="/complaints" className="btn-report condensed bg-gold text-ink">SUBMIT PROOF</Link>
+        </div>
+      </div>
       
       <section className="hero-section">
         <div className="hero-container">
