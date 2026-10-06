@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { collection, getDocs, orderBy, query } from 'firebase/firestore'
+import { Seo } from '../components/Seo.jsx'
 import { db, isFirebaseConfigured, normalizeDate } from '../lib/firebase.js'
+import { breadcrumbJsonLd } from '../lib/seo-schema.js'
 
 const STATIC_ARTICLES = [
   {
@@ -50,11 +52,22 @@ export function Articles() {
 
   return (
     <>
+      <Seo
+        title="CJP Blog — Party Dispatches, Protest Updates & Manifesto"
+        description="News, manifesto explainers, and protest updates from Cockroach Janta Party. Follow 10 October Jantar Mantar coverage and civic accountability reporting."
+        keywords="CJP blog, Cockroach Janta Party news, Jantar Mantar protest updates, Main Bhi Cockroach articles, youth politics India"
+        canonicalPath="/blog"
+        type="website"
+        jsonLd={breadcrumbJsonLd([
+          { name: 'Home', path: '/' },
+          { name: 'Blog', path: '/blog' },
+        ])}
+      />
       <section className="section bg-ink text-paper">
         <div className="section-content text-center">
           <h1 className="condensed hero-title">PARTY DISPATCHES</h1>
           <p className="hero-subtitle">
-            News, manifestos, and truth bombs from the Cockroach Janta Party.
+            News, manifesto explainers, and 10 October protest updates from the Cockroach Janta Party.
           </p>
         </div>
       </section>

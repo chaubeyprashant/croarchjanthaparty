@@ -7,6 +7,6 @@ export default defineReactSsgConfig({
   history: 'browser',
   origin: siteUrl,
   routes,
-  paths: ['/', '/community', '/complaints', '/complaints/new', '/complaints/heatmap'],
+  paths: ['/', '/community', '/complaints', '/complaints/new', '/complaints/heatmap', '/protests', '/join', '/blog'],
   logLevel: 'normal',
 })

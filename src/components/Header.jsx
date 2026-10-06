@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Globe, Menu, X } from 'lucide-react';
 import { useAuth } from '../context/auth-context.js';
+import { NotificationCenter } from './NotificationCenter.jsx';
 import './Header.css';
 
 export default function Header() {
-  const { isAuthenticated, user, signOut, authReady } = useAuth();
+  const { isAuthenticated, signOut, authReady } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   return (
@@ -53,7 +54,7 @@ export default function Header() {
           <Link to="/chat" className="nav-link condensed" style={{ color: 'var(--red)' }}>Live Chat</Link>
           <Link to="/complaints" className="nav-link condensed">Issues</Link>
           <Link to="/cockroach-tracker" className="nav-link condensed">Tracker</Link>
-          <Link to="/protests" className="nav-link condensed">Protests</Link>
+          <Link to="/protests" className="nav-link condensed" style={{ color: 'var(--red)' }}>10 Oct Protest</Link>
         </nav>
         <div className="header-actions">
           <div className="lang-selector">
@@ -66,10 +67,14 @@ export default function Header() {
               </svg>
             </button>
           </div>
+          <Link to="/protests" className="btn-join condensed bg-ink text-paper" style={{ backgroundColor: 'var(--gold)', color: 'var(--ink)' }}>
+            REGISTER 10 OCT →
+          </Link>
           {!authReady ? (
             <div className="btn-join condensed bg-ink text-paper" style={{ opacity: 0.7, padding: '0.5rem 1rem' }}>LOADING...</div>
           ) : isAuthenticated ? (
             <>
+              <NotificationCenter />
               <Link to="/profile" className="nav-link condensed" style={{ padding: '0.5rem 1rem' }}>PROFILE</Link>
               <button onClick={signOut} className="btn-join condensed bg-ink text-paper" style={{ border: 'none', cursor: 'pointer' }}>
                 LOG OUT
@@ -103,9 +108,10 @@ export default function Header() {
             <Link to="/chat" className="mobile-nav-link condensed" style={{ color: 'var(--red)' }} onClick={() => setIsMobileMenuOpen(false)}>Live Chat</Link>
             <Link to="/complaints" className="mobile-nav-link condensed" onClick={() => setIsMobileMenuOpen(false)}>Issues</Link>
             <Link to="/cockroach-tracker" className="mobile-nav-link condensed" onClick={() => setIsMobileMenuOpen(false)}>Tracker</Link>
-            <Link to="/protests" className="mobile-nav-link condensed" onClick={() => setIsMobileMenuOpen(false)}>Protests</Link>
+            <Link to="/protests" className="mobile-nav-link condensed" style={{ color: 'var(--red)' }} onClick={() => setIsMobileMenuOpen(false)}>10 Oct Protest</Link>
             
             <div className="mobile-menu-actions">
+              <Link to="/protests" className="btn-join condensed bg-ink text-paper" style={{ display: 'inline-flex', backgroundColor: 'var(--gold)', color: 'var(--ink)' }} onClick={() => setIsMobileMenuOpen(false)}>REGISTER 10 OCT →</Link>
               {!authReady ? (
                 <div className="btn-join condensed bg-ink text-paper" style={{ display: 'inline-flex', opacity: 0.7, padding: '0.75rem 1rem' }}>LOADING...</div>
               ) : isAuthenticated ? (

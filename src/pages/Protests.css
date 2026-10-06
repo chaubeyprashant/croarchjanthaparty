@@ -1,0 +1,140 @@
+.protests-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.protests-container {
+  width: min(80rem, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.protests-hero {
+  padding: 3.5rem 0 3rem;
+  border-bottom: 2px solid var(--ink);
+}
+
+.protests-eyebrow {
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  margin-bottom: 1rem;
+}
+
+.protests-title {
+  font-size: clamp(2.4rem, 7vw, 4.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.25rem;
+}
+
+.protests-lead {
+  max-width: 42rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  opacity: 0.9;
+  margin-bottom: 1.75rem;
+}
+
+.protests-meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  border-top: 1px solid rgba(244, 235, 215, 0.25);
+  border-bottom: 1px solid rgba(244, 235, 215, 0.25);
+  padding: 1rem 0;
+}
+
+.protests-meta span {
+  display: block;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.35rem;
+}
+
+.protests-meta strong {
+  font-size: 1rem;
+}
+
+.protests-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.protests-section {
+  padding: 3rem 0;
+  border-bottom: 2px solid var(--ink);
+}
+
+.protests-section-sub {
+  margin: 0.5rem 0 1.5rem;
+  opacity: 0.8;
+}
+
+.protests-demands {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.protests-demand-item {
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  gap: 1rem;
+  padding: 1.25rem;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.protests-demand-item h3 {
+  margin-bottom: 0.35rem;
+  font-size: 1.25rem;
+}
+
+.protests-demand-item p {
+  line-height: 1.55;
+  opacity: 0.85;
+}
+
+.protests-register {
+  background: #efe6d4;
+}
+
+.protests-register-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.protests-notes {
+  margin-top: 1.25rem;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 0.5rem;
+  line-height: 1.5;
+}
+
+.protests-form-card {
+  padding: 1.5rem;
+  border: 2px solid var(--ink);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+.protests-disclaimer {
+  max-width: 40rem;
+  margin: 0 auto 1.5rem;
+  opacity: 0.75;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 900px) {
+  .protests-meta,
+  .protests-register-grid {
+    grid-template-columns: 1fr;
+  }
+}

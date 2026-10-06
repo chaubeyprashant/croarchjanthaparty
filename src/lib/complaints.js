@@ -3,6 +3,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   increment,
   onSnapshot,
@@ -14,8 +15,13 @@ import {
 } from 'firebase/firestore'
 import { db, normalizeDate } from './firebase.js'
 import { moderateComplaint } from './moderation.js'
+import { createUserNotification } from './notifications.js'
 
 export const ISSUE_TYPES = [
+  'Police Assault / Beating',
+  'Police Sexual Harassment',
+  'Police Misbehavior',
+  'Police Misconduct',
   'Corruption',
   'Bribery',
   'Potholes',
@@ -25,10 +31,16 @@ export const ISSUE_TYPES = [
   'Construction Defect',
   'Government Negligence',
   'Public Misbehavior',
-  'Police Misconduct',
   'Electricity Issue',
   'Internet/Utility Issue',
   'Other',
+]
+
+export const POLICE_ISSUE_TYPES = [
+  'Police Assault / Beating',
+  'Police Sexual Harassment',
+  'Police Misbehavior',
+  'Police Misconduct',
 ]
 
 export const COMPLAINT_STATUSES = [
@@ -70,6 +82,7 @@ function mapComplaint(docSnap) {
     commentCount: data.commentCount || 0,
     reporterVisibility: data.reporterVisibility || { anonymous: false },
     reporter: data.reporterPublic || {},
+    reporterUserId: data.reporterUserId || null,
     createdAt: normalizeDate(data.createdAt) || new Date().toISOString(),
     updatedAt: normalizeDate(data.updatedAt) || new Date().toISOString(),
     ai: data.ai || {},
@@ -140,6 +153,10 @@ export async function createComplaint(payload, user) {
     name: payload.reporter?.name || '',
     mobile: payload.reporter?.mobile || '',
     email: payload.reporter?.email || '',
+    instagram: payload.reporter?.instagram || '',
+    facebook: payload.reporter?.facebook || '',
+    twitter: payload.reporter?.twitter || '',
+    otherSocial: payload.reporter?.otherSocial || '',
     createdAt: serverTimestamp(),
   })
   
@@ -156,7 +173,19 @@ export async function createComplaint(payload, user) {
     changedBy: user?.id || '',
     createdAt: serverTimestamp(),
   })
-  return { id: complaintRef.id, referenceId }
+
+  await createUserNotification(user.id, {
+    type: 'complaint_submitted',
+    title: 'Complaint submitted',
+    body: ai.needsReview
+      ? `${referenceId} is under automated review before public verification.`
+      : `${referenceId} is live. Track status anytime.`,
+    href: `/complaints/${complaintRef.id}`,
+    complaintId: complaintRef.id,
+    referenceId,
+  })
+
+  return { id: complaintRef.id, referenceId, ai }
 }
 
 export function subscribeComplaints(handler, errorHandler) {
@@ -271,6 +300,22 @@ export function subscribeSupportRecord(complaintId, userId, onData) {
   )
 }
 
+export async function getComplaintPrivateReporter(complaintId) {
+  if (!db || !complaintId) return null
+  const snap = await getDoc(doc(db, 'complaints', complaintId, 'private', 'reporter'))
+  if (!snap.exists()) return null
+  const data = snap.data()
+  return {
+    name: data.name || '',
+    mobile: data.mobile || '',
+    email: data.email || '',
+    instagram: data.instagram || '',
+    facebook: data.facebook || '',
+    twitter: data.twitter || '',
+    otherSocial: data.otherSocial || '',
+  }
+}
+
 export async function reportComplaintAsFake(complaintId, payload, user) {
   if (!db) return
   await addDoc(collection(db, 'complaints', complaintId, 'flags'), {
@@ -281,7 +326,7 @@ export async function reportComplaintAsFake(complaintId, payload, user) {
   })
 }
 
-export async function updateComplaintStatus(complaintId, status, note, adminUser) {
+export async function updateComplaintStatus(complaintId, status, note, adminUser, complaintMeta = {}) {
   if (!db) return
   await updateDoc(doc(db, 'complaints', complaintId), {
     status,
@@ -301,4 +346,27 @@ export async function updateComplaintStatus(complaintId, status, note, adminUser
     adminId: adminUser?.id || null,
     createdAt: serverTimestamp(),
   })
+
+  const reporterUserId = complaintMeta.reporterUserId
+  const referenceId = complaintMeta.referenceId || complaintId
+  if (reporterUserId) {
+    try {
+      await updateDoc(doc(db, 'users', reporterUserId, 'complaints', complaintId), {
+        status,
+        updatedAt: serverTimestamp(),
+      })
+    } catch {
+      /* personal mirror may not exist for older complaints */
+    }
+    await createUserNotification(reporterUserId, {
+      type: 'complaint_status',
+      title: `Status: ${String(status).replace('_', ' ')}`,
+      body: note?.trim()
+        ? `${referenceId} — ${note.trim()}`
+        : `${referenceId} was updated to ${String(status).replace('_', ' ')}.`,
+      href: `/complaints/${complaintId}`,
+      complaintId,
+      referenceId,
+    })
+  }
 }

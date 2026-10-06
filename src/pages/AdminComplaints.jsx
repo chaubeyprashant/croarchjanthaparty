@@ -3,13 +3,19 @@ import { Link } from 'react-router-dom'
 import { Reveal } from '../components/Reveal.jsx'
 import { Seo } from '../components/Seo.jsx'
 import { useAuth } from '../context/auth-context.js'
-import { COMPLAINT_STATUSES, subscribeComplaints, updateComplaintStatus } from '../lib/complaints.js'
+import {
+  COMPLAINT_STATUSES,
+  getComplaintPrivateReporter,
+  subscribeComplaints,
+  updateComplaintStatus,
+} from '../lib/complaints.js'
 
 export function AdminComplaints() {
   const { isAdmin, user } = useAuth()
   const [complaints, setComplaints] = useState([])
   const [statusDraft, setStatusDraft] = useState({})
   const [noteDraft, setNoteDraft] = useState({})
+  const [contacts, setContacts] = useState({})
   const [query, setQuery] = useState('')
   const [backendError, setBackendError] = useState('')
 
@@ -39,11 +45,24 @@ export function AdminComplaints() {
   const handleUpdate = async (complaintId) => {
     const status = statusDraft[complaintId]
     if (!status) return
+    const complaint = complaints.find((row) => row.id === complaintId)
     try {
-      await updateComplaintStatus(complaintId, status, noteDraft[complaintId], user)
+      await updateComplaintStatus(complaintId, status, noteDraft[complaintId], user, {
+        reporterUserId: complaint?.reporterUserId,
+        referenceId: complaint?.referenceId,
+      })
       setNoteDraft((current) => ({ ...current, [complaintId]: '' }))
     } catch {
       setBackendError('Unable to update complaint status.')
+    }
+  }
+
+  const loadContact = async (complaintId) => {
+    try {
+      const contact = await getComplaintPrivateReporter(complaintId)
+      setContacts((current) => ({ ...current, [complaintId]: contact || { empty: true } }))
+    } catch {
+      setBackendError('Unable to load private contact details.')
     }
   }
 
@@ -108,6 +127,15 @@ export function AdminComplaints() {
                     <strong>{complaint.referenceId}</strong>
                     <div>{complaint.title}</div>
                     <small>{complaint.issueType}</small>
+                    {complaint.ai?.needsReview && (
+                      <div>
+                        <span className="chip chip-orange">AI review</span>
+                        <small>
+                          risk {complaint.ai.riskScore ?? '—'}
+                          {complaint.ai.flags?.length ? ` · ${complaint.ai.flags.join(', ')}` : ''}
+                        </small>
+                      </div>
+                    )}
                   </td>
                   <td>
                     {complaint.city}, {complaint.state}
@@ -152,10 +180,36 @@ export function AdminComplaints() {
                         >
                           Save
                         </button>
+                        <button
+                          type="button"
+                          className="btn btn-link"
+                          onClick={() => loadContact(complaint.id)}
+                        >
+                          Contact
+                        </button>
                         <Link className="btn btn-link" to={`/complaints/${complaint.id}`}>
                           Open
                         </Link>
                       </div>
+                      {contacts[complaint.id] && !contacts[complaint.id].empty && (
+                        <div className="admin-contact-card">
+                          <small>
+                            {contacts[complaint.id].name} · {contacts[complaint.id].mobile} ·{' '}
+                            {contacts[complaint.id].email}
+                          </small>
+                          <small>
+                            IG: {contacts[complaint.id].instagram || '—'} · FB:{' '}
+                            {contacts[complaint.id].facebook || '—'} · X:{' '}
+                            {contacts[complaint.id].twitter || '—'}
+                          </small>
+                          {contacts[complaint.id].otherSocial ? (
+                            <small>Other: {contacts[complaint.id].otherSocial}</small>
+                          ) : null}
+                        </div>
+                      )}
+                      {contacts[complaint.id]?.empty && (
+                        <small className="muted">No private contact on file.</small>
+                      )}
                     </div>
                   </td>
                 </tr>

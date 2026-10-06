@@ -1,24 +1,27 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { doc, updateDoc } from 'firebase/firestore'
 import { ComplaintWizard } from '../components/complaints/ComplaintWizard.jsx'
 import { Reveal } from '../components/Reveal.jsx'
 import { Seo } from '../components/Seo.jsx'
-import { breadcrumbJsonLd } from '../lib/seo-schema.js'
+import { breadcrumbJsonLd, policeComplaintHowToJsonLd } from '../lib/seo-schema.js'
 import { useAuth } from '../context/auth-context.js'
 import { createComplaint } from '../lib/complaints.js'
+import { COMPLAINT_KEYWORDS, DEFAULT_KEYWORDS } from '../lib/site.js'
 import { db, firebaseConfigError, isFirebaseConfigured } from '../lib/firebase.js'
 import { uploadComplaintFiles } from '../lib/uploads.js'
 
 export function ComplaintCreate() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const policeFocus =
+    searchParams.get('focus') === 'police' || searchParams.get('type') === 'police'
   const { isAuthenticated, user } = useAuth()
   const [submitting, setSubmitting] = useState(false)
   const [backendError, setBackendError] = useState(() =>
     isFirebaseConfigured ? '' : firebaseConfigError(),
   )
   const [uploadProgress, setUploadProgress] = useState({})
-
   const [successMessage, setSuccessMessage] = useState('')
 
   const handleSubmit = async (form) => {
@@ -76,31 +79,56 @@ export function ComplaintCreate() {
   return (
     <>
       <Seo
-        title="File a Complaint — Corruption & Civic Reporting"
-        description="Submit a corruption or civic issue report with photo evidence, location pin, anonymous privacy controls, and a trackable reference ID."
-        keywords="file corruption complaint India, civic complaint form, anonymous reporting, pothole complaint online, bribery report"
+        title={
+          policeFocus
+            ? 'Report Police Brutality — Photo/Video Proof'
+            : 'File a Complaint — Corruption & Civic Reporting'
+        }
+        description={
+          policeFocus
+            ? 'Report police beating, molestation, or misbehavior with photo/video proof. Share name, phone, email, and social media privately for follow-up.'
+            : 'Submit a corruption or civic issue report with photo evidence, location pin, anonymous privacy controls, and a trackable reference ID.'
+        }
+        keywords={`${COMPLAINT_KEYWORDS}, ${DEFAULT_KEYWORDS}`}
         canonicalPath="/complaints/new"
-        jsonLd={breadcrumbJsonLd([
-          { name: 'Home', path: '/' },
-          { name: 'Public Complaints', path: '/complaints' },
-          { name: 'File Complaint', path: '/complaints/new' },
-        ])}
+        jsonLd={[
+          policeComplaintHowToJsonLd(),
+          breadcrumbJsonLd([
+            { name: 'Home', path: '/' },
+            { name: 'Public Complaints', path: '/complaints' },
+            { name: 'File Complaint', path: '/complaints/new' },
+          ]),
+        ]}
       />
       <section className="section page-head">
         <Reveal as="p" className="eyebrow">
-          Complaint Submission
+          {policeFocus ? 'Police Misconduct Reporting' : 'Complaint Submission'}
         </Reveal>
         <Reveal as="h1" delay={60}>
-          Report an issue in <em className="accent-orange">5 steps.</em>
+          {policeFocus ? (
+            <>
+              Report police <em className="accent-orange">brutality</em> with proof.
+            </>
+          ) : (
+            <>
+              Report an issue in <em className="accent-orange">4 steps.</em>
+            </>
+          )}
         </Reveal>
         <Reveal as="p" className="lead" delay={120}>
-          Upload evidence, pin the location, choose urgency, and get a complaint reference ID for
-          tracking.
+          {policeFocus
+            ? 'Beaten, molested, or mistreated by police? Upload image/video proof and leave your name, phone, email, and Instagram/Facebook so we can verify and follow up privately.'
+            : 'Upload evidence, add your contact + socials, pin the location, and get a trackable reference ID with status notifications.'}
         </Reveal>
         <Reveal className="hero-actions" delay={160}>
           <Link to="/complaints" className="btn btn-ghost">
             Back to feed
           </Link>
+          {!policeFocus && (
+            <Link to="/complaints/new?focus=police" className="btn btn-primary">
+              Police brutality form →
+            </Link>
+          )}
         </Reveal>
         {backendError && <p className="auth-error">{backendError}</p>}
         {!isAuthenticated && (
@@ -119,6 +147,7 @@ export function ComplaintCreate() {
             uploadProgress={uploadProgress}
             backendError={backendError}
             successMessage={successMessage}
+            policeFocus={policeFocus}
           />
         </Reveal>
       </section>

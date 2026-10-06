@@ -89,9 +89,9 @@ export function Complaints() {
   return (
     <>
       <Seo
-        title="Public Complaints — Report Corruption & Civic Issues"
-        description="Report corruption, potholes, road damage, bribery, and government negligence. Track complaint status publicly and support community accountability across India."
-        keywords="public complaints India, corruption reporting, civic issue reporting, pothole report, RTI complaint, government negligence, CJP complaints"
+        title="Public Complaints — Police Brutality, Corruption & Civic Issues"
+        description="Report police assault, molestation, misbehavior, corruption, and civic issues with photo/video proof. Track status publicly. Cockroach Janta Party accountability desk."
+        keywords="police brutality complaint India, report police assault, police misbehavior complaint, corruption reporting India, civic complaints, CJP complaints, upload complaint proof, public accountability India"
         canonicalPath="/complaints"
         jsonLd={breadcrumbJsonLd([
           { name: 'Home', path: '/' },

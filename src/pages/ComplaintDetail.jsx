@@ -188,6 +188,11 @@ export function ComplaintDetail() {
               loading="lazy"
             />
             <p className="muted">Scan to open this complaint status page.</p>
+            {complaint.ai?.needsReview && (
+              <p className="muted">
+                Automated review flags: {(complaint.ai.flags || []).join(', ') || 'needs review'}
+              </p>
+            )}
           </div>
         </Reveal>
 
