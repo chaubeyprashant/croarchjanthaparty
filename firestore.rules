@@ -198,6 +198,11 @@ service cloud.firestore {
       allow update, delete: if isAdmin();
     }
 
+    match /donate_page_visits/{visitId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
     match /donations/{donationId} {
       allow read: if signedIn();
       allow create: if true;

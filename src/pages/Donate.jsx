@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Check, Coffee, Copy, ExternalLink, Heart, ShieldCheck, Smartphone, Sparkles } from 'lucide-react'
 import { useAuth } from '../context/auth-context.js'
 import { Seo } from '../components/Seo.jsx'
-import { recordDevSupport } from '../lib/supporters.js'
+import { recordDevSupport, recordDonatePageVisit } from '../lib/supporters.js'
 import './Donate.css'
 
 const DOMESTIC_PRESETS = [100, 250, 500, 1000, 2000]
@@ -12,6 +12,11 @@ export default function Donate() {
   const { user, isAuthenticated } = useAuth()
   const [activeTab, setActiveTab] = useState('domestic')
   const [copiedUpi, setCopiedUpi] = useState(false)
+
+  // Automatically record page visit to Firebase donate_page_visits collection
+  useEffect(() => {
+    recordDonatePageVisit(user)
+  }, [user])
 
   // Form state
   const [name, setName] = useState(() => user?.name || '')

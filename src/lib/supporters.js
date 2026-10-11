@@ -13,6 +13,84 @@ import {
 import { db, isFirebaseConfigured, normalizeDate } from './firebase.js'
 
 export const DEV_SUPPORTERS_COLLECTION = 'dev_supporters'
+export const DONATE_VISITS_COLLECTION = 'donate_page_visits'
+
+/**
+ * Automatically record a visit to the Support the Dev page
+ */
+export async function recordDonatePageVisit(user = null) {
+  if (!isFirebaseConfigured || !db) return null
+
+  // Prevent multiple logs within the same browsing session tab
+  try {
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+      const alreadyLogged = window.sessionStorage.getItem('donate_visit_logged')
+      if (alreadyLogged) return null
+      window.sessionStorage.setItem('donate_visit_logged', String(Date.now()))
+    }
+  } catch {
+    // Session storage may be restricted in private mode
+  }
+
+  try {
+    const visitData = {
+      path: '/donate',
+      userId: user?.id || null,
+      userName: user?.name || 'Guest Visitor',
+      userEmail: user?.email || '',
+      referrer: typeof document !== 'undefined' ? document.referrer || 'direct' : 'direct',
+      device: typeof window !== 'undefined' && window.innerWidth < 768 ? 'mobile' : 'desktop',
+      screenResolution:
+        typeof window !== 'undefined' ? `${window.innerWidth}x${window.innerHeight}` : '',
+      language: typeof navigator !== 'undefined' ? navigator.language : '',
+      visitedAt: serverTimestamp(),
+    }
+
+    const docRef = await addDoc(collection(db, DONATE_VISITS_COLLECTION), visitData)
+    return docRef.id
+  } catch (err) {
+    console.warn('Could not log donate page visit to Firebase:', err)
+    return null
+  }
+}
+
+/**
+ * Real-time listener for donate page visits (Admin use)
+ */
+export function subscribeDonateVisits(onData, onError, maxItems = 50) {
+  if (!isFirebaseConfigured || !db) {
+    if (onError) onError(new Error('Firebase not configured'))
+    return () => {}
+  }
+
+  const q = query(
+    collection(db, DONATE_VISITS_COLLECTION),
+    orderBy('visitedAt', 'desc'),
+    limit(maxItems),
+  )
+
+  return onSnapshot(
+    q,
+    (snapshot) => {
+      const visits = snapshot.docs.map((docSnap) => {
+        const data = docSnap.data()
+        return {
+          id: docSnap.id,
+          userName: data.userName || 'Guest Visitor',
+          userEmail: data.userEmail || '',
+          userId: data.userId || null,
+          referrer: data.referrer || 'direct',
+          device: data.device || 'desktop',
+          visitedAt: normalizeDate(data.visitedAt) || new Date().toISOString(),
+        }
+      })
+      onData(visits)
+    },
+    (error) => {
+      if (onError) onError(error)
+    },
+  )
+}
 
 /**
  * Record details of a user who paid / contributed through Support the Dev

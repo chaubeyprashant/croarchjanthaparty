@@ -8,6 +8,7 @@ import { db, firebaseConfigError, isFirebaseConfigured, normalizeDate } from '..
 import {
   deleteDevSupporter,
   subscribeDevSupporters,
+  subscribeDonateVisits,
   updateSupporterStatus,
 } from '../lib/supporters.js'
 
@@ -35,6 +36,7 @@ export function Admin() {
   const { isAdmin, user, users, promoteRole, removeMember } = useAuth()
   const [supporters, setSupporters] = useState([])
   const [legacyDonations, setLegacyDonations] = useState([])
+  const [visits, setVisits] = useState([])
   const [threads, setThreads] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
@@ -55,6 +57,17 @@ export function Admin() {
         setBackendError('Unable to load dev supporters from Firebase.')
       },
       100,
+    )
+    return () => unsubscribe()
+  }, [])
+
+  // Subscribe to donate_page_visits collection
+  useEffect(() => {
+    if (!isFirebaseConfigured || !db) return undefined
+    const unsubscribe = subscribeDonateVisits(
+      (data) => setVisits(data),
+      () => {},
+      50,
     )
     return () => unsubscribe()
   }, [])
@@ -222,7 +235,7 @@ export function Admin() {
           Run the <em className="accent-orange">swarm.</em>
         </Reveal>
         <Reveal as="p" className="lead" delay={120}>
-          Dev supporter ledger, member roster, moderation tools. Role-restricted to admins.
+          Dev supporter ledger, visitor logs, member roster, moderation tools. Role-restricted to admins.
         </Reveal>
         {backendError && <p className="auth-error">{backendError}</p>}
       </section>
@@ -235,19 +248,19 @@ export function Admin() {
             <em>{stats.donationCount} supporters</em>
           </Reveal>
           <Reveal className="stat" delay={60}>
+            <span>Page Visitors</span>
+            <strong>{visits.length}</strong>
+            <em>live logged (/donate)</em>
+          </Reveal>
+          <Reveal className="stat" delay={120}>
             <span>Verified Payments</span>
             <strong>{stats.verified}</strong>
             <em>out of {stats.donationCount}</em>
           </Reveal>
-          <Reveal className="stat" delay={120}>
+          <Reveal className="stat" delay={180}>
             <span>Members</span>
             <strong>{stats.members}</strong>
             <em>{stats.admins} admins</em>
-          </Reveal>
-          <Reveal className="stat" delay={180}>
-            <span>Open threads</span>
-            <strong>{stats.openThreads}</strong>
-            <em>{stats.reported} reported</em>
           </Reveal>
         </div>
       </section>
@@ -401,6 +414,38 @@ export function Admin() {
         </Reveal>
 
         <Reveal className="admin-card" delay={80}>
+          <header>
+            <h2>Page Visitors (/donate)</h2>
+            <p>Live visitors logged in <code>donate_page_visits</code>.</p>
+          </header>
+          {visits.length === 0 ? (
+            <p className="muted">No visitors logged yet.</p>
+          ) : (
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Visitor</th>
+                  <th>Device</th>
+                  <th>When</th>
+                </tr>
+              </thead>
+              <tbody>
+                {visits.slice(0, 8).map((v) => (
+                  <tr key={v.id}>
+                    <td>
+                      <div>{v.userName}</div>
+                      {v.userEmail && <small>{v.userEmail}</small>}
+                    </td>
+                    <td className="uppercase">{v.device}</td>
+                    <td>{timeAgo(v.visitedAt)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </Reveal>
+
+        <Reveal className="admin-card" delay={100}>
           <header>
             <h2>Members</h2>
             <p>Promote, demote, or remove. Demo data shown.</p>
