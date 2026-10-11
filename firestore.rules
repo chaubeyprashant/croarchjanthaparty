@@ -188,9 +188,19 @@ service cloud.firestore {
       allow delete: if signedIn() && (request.auth.uid == userId || isAdmin());
     }
 
+    match /dev_supporters/{supporterId} {
+      allow read: if isAdmin() || (signedIn() && resource.data.userId == request.auth.uid);
+      allow create: if request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 100
+        && request.resource.data.amount is number
+        && request.resource.data.amount > 0;
+      allow update, delete: if isAdmin();
+    }
+
     match /donations/{donationId} {
       allow read: if signedIn();
-      allow create: if signedIn();
+      allow create: if true;
       allow update, delete: if isAdmin();
     }
 
