@@ -71,7 +71,7 @@ export function ProtestRegisterForm({ onSuccess, compact = false }) {
     return (
       <div className="march-modal-login-prompt">
         <p style={{ opacity: 0.8 }}>
-          Log in to register for the 10 October protest at Jantar Mantar.
+          Log in to register for the protest at Jantar Mantar.
         </p>
         <Link to="/login" className="btn-campaign condensed bg-ink text-paper">
           LOG IN TO REGISTER
@@ -95,7 +95,7 @@ export function ProtestRegisterForm({ onSuccess, compact = false }) {
 
       {hasExistingPhone ? (
         <p className="march-modal-sub">
-          We have your phone ({user.phone}) on file. Confirm how you will join on 10 October.
+          We have your phone ({user.phone}) on file. Confirm how you will join the protest.
         </p>
       ) : (
         <label>
@@ -151,7 +151,7 @@ export function ProtestRegisterForm({ onSuccess, compact = false }) {
           className="btn-campaign condensed bg-ink text-paper"
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'SUBMITTING...' : 'REGISTER FOR 10 OCT'}
+          {isSubmitting ? 'SUBMITTING...' : 'JOIN THE PROTEST'}
         </button>
       )}
     </form>

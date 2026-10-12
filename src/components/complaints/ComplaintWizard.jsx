@@ -105,7 +105,7 @@ function StepDetails({ form, setForm, labels, voiceState, onVoice, policeFocus }
           maxLength={120}
           placeholder={
             isPoliceIssue(form.issueType)
-              ? 'Example: Beaten by police at Jantar Mantar on 10 Oct'
+              ? 'Example: Beaten by police at Jantar Mantar'
               : undefined
           }
         />

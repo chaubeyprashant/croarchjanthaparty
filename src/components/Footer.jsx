@@ -13,7 +13,7 @@ export default function Footer() {
           <div className="footer-links">
             <div className="link-group">
               <h3 className="condensed">NAVIGATION</h3>
-              <Link to="/protests">10 Oct Protest</Link>
+              <Link to="/protests">Join the Protest</Link>
               <a href="/#manifesto">Manifesto</a>
               <Link to="/blog">Articles</Link>
             </div>

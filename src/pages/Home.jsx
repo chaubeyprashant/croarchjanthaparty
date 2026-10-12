@@ -84,16 +84,16 @@ export default function Home() {
               <span className="block text-gold">JOIN THE SWARM.</span>
             </h1>
             <p className="hero-kicker condensed">
-              Cockroach Janta Party · 10 Oct Jantar Mantar · Main Bhi Cockroach
+              Cockroach Janta Party · Jantar Mantar · Main Bhi Cockroach
             </p>
             <p className="hero-subtitle font-serif-dev">
               For the overqualified, underemployed, and politically frustrated youth of India.
-              Register for the 10 October protest, stand for CJP’s five demands, and report police
-              brutality with proof. Main bhi Cockroach.
+              Join the protest, stand for CJP’s five demands, and report police brutality with
+              proof. Main bhi Cockroach.
             </p>
             <div className="hero-actions">
               <Link to="/protests" className="btn-hero-primary condensed">
-                10 OCT PROTEST →
+                JOIN THE PROTEST →
               </Link>
               <a href="#manifesto" className="btn-hero-secondary condensed">
                 READ MANIFESTO
@@ -161,7 +161,7 @@ export default function Home() {
         <div className="faq-container">
           <h2 className="section-title condensed">FREQUENTLY ASKED</h2>
           <p className="faq-intro">
-            Quick answers about Cockroach Janta Party, the 10 October Jantar Mantar protest, and
+            Quick answers about Cockroach Janta Party, the Jantar Mantar protest, and
             police brutality complaints.
           </p>
           <div className="faq-list">
@@ -174,7 +174,7 @@ export default function Home() {
           </div>
           <div className="faq-actions">
             <Link to="/protests" className="btn-campaign condensed bg-ink text-paper">
-              REGISTER 10 OCT →
+              JOIN THE PROTEST →
             </Link>
             <Link to="/complaints/new?focus=police" className="btn-campaign condensed bg-gold text-ink">
               REPORT POLICE BRUTALITY →

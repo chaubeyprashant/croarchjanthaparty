@@ -1,12 +1,12 @@
 export const OCT10_CAMPAIGN = {
   eventDate: '2026-10-10',
-  eventDateLabel: '10 OCTOBER',
+  eventDateLabel: 'ONGOING 24/7',
   venue: 'Jantar Mantar, New Delhi',
   timing: '24/7 — continuous peaceful presence',
-  headline: '10 OCTOBER: REGISTER FOR THE PROTEST',
+  headline: 'JANTAR MANTAR: JOIN THE PROTEST',
   subhead:
-    'Demand CEC accountability. Stand for CJP’s five non-negotiable demands. Register for Jantar Mantar — in person or virtually.',
-  ctaPrimary: 'REGISTER FOR 10 OCT →',
+    'Demand CEC accountability. Stand for CJP’s five non-negotiable demands. Join the protest at Jantar Mantar — in person or virtually.',
+  ctaPrimary: 'JOIN THE PROTEST →',
   collection: 'protest_registrations_oct10',
 }
 

@@ -4,13 +4,13 @@
 
 ## Primary pages
 - [Home](https://cockroachjanthaparty.com/): Movement overview, manifesto, FAQ
-- [10 October Protest](https://cockroachjanthaparty.com/protests): Register for Jantar Mantar 24/7 protest
+- [Join the Protest](https://cockroachjanthaparty.com/protests): Register for Jantar Mantar 24/7 protest
 - [Police brutality complaint](https://cockroachjanthaparty.com/complaints/new?focus=police): Report assault/misbehavior with photo-video proof
 - [Public complaints](https://cockroachjanthaparty.com/complaints): Civic issue feed
 - [Join](https://cockroachjanthaparty.com/join): Become a member
 - [Blog](https://cockroachjanthaparty.com/blog): Party dispatches
 
 ## Key facts
-- Event: 10 October 2026, Jantar Mantar, New Delhi, 24/7 peaceful presence
+- Event: Jantar Mantar, New Delhi, 24/7 peaceful presence
 - Demands: Jobs & Accountability, Education Reform, Press Freedom, Judicial Dignity, Transparency Now
 - Contact socials: Instagram @cockroachjantaparty, X @Cockroachisback

@@ -11,10 +11,10 @@ export const SOCIAL_LINKS = [
 ]
 
 export const DEFAULT_TITLE =
-  'CJP Protest 10 October Jantar Mantar | Cockroach Janta Party — Main Bhi Cockroach'
+  'CJP Protest Jantar Mantar | Cockroach Janta Party — Main Bhi Cockroach'
 
 export const DEFAULT_DESCRIPTION =
-  'Cockroach Janta Party (CJP) — register for the 10 October Jantar Mantar protest (24/7), stand for five non-negotiable demands, report police brutality with photo/video proof, and join India’s youth accountability movement. Main Bhi Cockroach.'
+  'Cockroach Janta Party (CJP) — join the Jantar Mantar protest (24/7), stand for five non-negotiable demands, report police brutality with photo/video proof, and join India’s youth accountability movement. Main Bhi Cockroach.'
 
 export const DEFAULT_KEYWORDS = [
   // Brand
@@ -29,12 +29,11 @@ export const DEFAULT_KEYWORDS = [
   'मैं भी कॉकरोच',
   '#CJP',
   '#MainBhiCockroach',
-  // Oct 10 campaign
-  '10 October protest',
-  '10 October Jantar Mantar',
+  // Jantar Mantar campaign
   'Jantar Mantar protest',
+  'Jantar Mantar 24/7',
   'Jantar Mantar protest today',
-  'Delhi protest 10 October',
+  'Delhi protest',
   'Delhi protest today',
   'CJP Jantar Mantar',
   'register for protest Delhi',
@@ -64,8 +63,8 @@ export const DEFAULT_KEYWORDS = [
 ].join(', ')
 
 export const PROTEST_KEYWORDS = [
-  'CJP protest 10 October',
-  'Jantar Mantar protest 10 October',
+  'CJP protest',
+  'Jantar Mantar protest',
   'Jantar Mantar 24/7 protest',
   'register CJP protest',
   'Delhi protest registration',
@@ -91,7 +90,7 @@ export const COMPLAINT_KEYWORDS = [
 ].join(', ')
 
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.svg`
-export const DEFAULT_OG_IMAGE_ALT = 'Cockroach Janta Party — 10 October Jantar Mantar | Main Bhi Cockroach'
+export const DEFAULT_OG_IMAGE_ALT = 'Cockroach Janta Party — Jantar Mantar | Main Bhi Cockroach'
 
 export const PUBLIC_ROUTES = [
   { path: '/', changefreq: 'daily', priority: '1.0' },

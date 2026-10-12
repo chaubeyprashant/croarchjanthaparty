@@ -54,7 +54,7 @@ export default function Header() {
           <Link to="/chat" className="nav-link condensed" style={{ color: 'var(--red)' }}>Live Chat</Link>
           <Link to="/complaints" className="nav-link condensed">Issues</Link>
           <Link to="/cockroach-tracker" className="nav-link condensed">Tracker</Link>
-          <Link to="/protests" className="nav-link condensed" style={{ color: 'var(--red)' }}>10 Oct Protest</Link>
+          <Link to="/protests" className="nav-link condensed" style={{ color: 'var(--red)' }}>Join Protest</Link>
         </nav>
         <div className="header-actions">
           <div className="lang-selector">
@@ -68,7 +68,7 @@ export default function Header() {
             </button>
           </div>
           <Link to="/protests" className="btn-join condensed bg-ink text-paper" style={{ backgroundColor: 'var(--gold)', color: 'var(--ink)' }}>
-            REGISTER 10 OCT →
+            JOIN THE PROTEST →
           </Link>
           {!authReady ? (
             <div className="btn-join condensed bg-ink text-paper" style={{ opacity: 0.7, padding: '0.5rem 1rem' }}>LOADING...</div>
@@ -108,10 +108,10 @@ export default function Header() {
             <Link to="/chat" className="mobile-nav-link condensed" style={{ color: 'var(--red)' }} onClick={() => setIsMobileMenuOpen(false)}>Live Chat</Link>
             <Link to="/complaints" className="mobile-nav-link condensed" onClick={() => setIsMobileMenuOpen(false)}>Issues</Link>
             <Link to="/cockroach-tracker" className="mobile-nav-link condensed" onClick={() => setIsMobileMenuOpen(false)}>Tracker</Link>
-            <Link to="/protests" className="mobile-nav-link condensed" style={{ color: 'var(--red)' }} onClick={() => setIsMobileMenuOpen(false)}>10 Oct Protest</Link>
+            <Link to="/protests" className="mobile-nav-link condensed" style={{ color: 'var(--red)' }} onClick={() => setIsMobileMenuOpen(false)}>Join Protest</Link>
             
             <div className="mobile-menu-actions">
-              <Link to="/protests" className="btn-join condensed bg-ink text-paper" style={{ display: 'inline-flex', backgroundColor: 'var(--gold)', color: 'var(--ink)' }} onClick={() => setIsMobileMenuOpen(false)}>REGISTER 10 OCT →</Link>
+              <Link to="/protests" className="btn-join condensed bg-ink text-paper" style={{ display: 'inline-flex', backgroundColor: 'var(--gold)', color: 'var(--ink)' }} onClick={() => setIsMobileMenuOpen(false)}>JOIN THE PROTEST →</Link>
               {!authReady ? (
                 <div className="btn-join condensed bg-ink text-paper" style={{ display: 'inline-flex', opacity: 0.7, padding: '0.75rem 1rem' }}>LOADING...</div>
               ) : isAuthenticated ? (

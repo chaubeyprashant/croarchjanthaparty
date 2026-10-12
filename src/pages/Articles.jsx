@@ -54,7 +54,7 @@ export function Articles() {
     <>
       <Seo
         title="CJP Blog — Party Dispatches, Protest Updates & Manifesto"
-        description="News, manifesto explainers, and protest updates from Cockroach Janta Party. Follow 10 October Jantar Mantar coverage and civic accountability reporting."
+        description="News, manifesto explainers, and protest updates from Cockroach Janta Party. Follow Jantar Mantar coverage and civic accountability reporting."
         keywords="CJP blog, Cockroach Janta Party news, Jantar Mantar protest updates, Main Bhi Cockroach articles, youth politics India"
         canonicalPath="/blog"
         type="website"
@@ -67,7 +67,7 @@ export function Articles() {
         <div className="section-content text-center">
           <h1 className="condensed hero-title">PARTY DISPATCHES</h1>
           <p className="hero-subtitle">
-            News, manifesto explainers, and 10 October protest updates from the Cockroach Janta Party.
+            News, manifesto explainers, and protest updates from the Cockroach Janta Party.
           </p>
         </div>
       </section>

@@ -14,15 +14,15 @@ export function Protests() {
   return (
     <>
       <Seo
-        title="CJP 10 October Protest Registration — Jantar Mantar 24/7"
-        description="Register for the Cockroach Janta Party 10 October protest at Jantar Mantar, New Delhi. 24/7 peaceful presence. Join in person or virtually. Stand for CJP’s five demands and CEC accountability."
+        title="CJP Protest Registration — Jantar Mantar 24/7"
+        description="Join the Cockroach Janta Party protest at Jantar Mantar, New Delhi. 24/7 peaceful presence. Join in person or virtually. Stand for CJP’s five demands and CEC accountability."
         keywords={`${PROTEST_KEYWORDS}, ${DEFAULT_KEYWORDS}`}
         canonicalPath="/protests"
         jsonLd={[
           protestEventJsonLd(),
           breadcrumbJsonLd([
             { name: 'Home', path: '/' },
-            { name: '10 October Protest', path: '/protests' },
+            { name: 'Join Protest', path: '/protests' },
           ]),
         ]}
       />
@@ -30,7 +30,7 @@ export function Protests() {
       <div className="protests-page">
         <section className="protests-hero bg-ink text-paper">
           <div className="protests-container">
-            <p className="protests-eyebrow text-gold condensed">LIVE CAMPAIGN · 10 OCTOBER 2026</p>
+            <p className="protests-eyebrow text-gold condensed">LIVE CAMPAIGN · JANTAR MANTAR</p>
             <h1 className="protests-title font-bowlby">
               JANTAR MANTAR.
               <br />
@@ -91,7 +91,7 @@ export function Protests() {
         <section id="register" className="protests-section bg-paper-soft protests-register">
           <div className="protests-container protests-register-grid">
             <div>
-              <h2 className="section-title condensed">REGISTER FOR 10 OCT</h2>
+              <h2 className="section-title condensed">JOIN THE PROTEST</h2>
               <p>
                 Tell us if you’ll be at Jantar Mantar or joining virtually. We’ll share WhatsApp
                 updates for coordination.

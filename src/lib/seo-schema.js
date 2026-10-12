@@ -71,7 +71,7 @@ export function protestEventJsonLd() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Event',
-    name: 'CJP 10 October Protest — Jantar Mantar',
+    name: 'CJP Protest — Jantar Mantar',
     description: OCT10_CAMPAIGN.subhead,
     startDate: `${OCT10_CAMPAIGN.eventDate}T00:00:00+05:30`,
     eventAttendanceMode: 'https://schema.org/MixedEventAttendanceMode',
@@ -119,7 +119,7 @@ export const HOME_FAQS = [
       'Cockroach Janta Party is a satirical people’s movement for India’s overqualified, underemployed youth. Five non-negotiable demands. Zero sponsors. Main Bhi Cockroach.',
   },
   {
-    question: 'When and where is the CJP 10 October protest?',
+    question: 'When and where is the CJP protest?',
     answer: `${OCT10_CAMPAIGN.eventDateLabel} at ${OCT10_CAMPAIGN.venue}. Timing: ${OCT10_CAMPAIGN.timing}. Register on the protests page for in-person or virtual participation.`,
   },
   {

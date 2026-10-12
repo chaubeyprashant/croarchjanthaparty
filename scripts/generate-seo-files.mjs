@@ -63,14 +63,14 @@ const llms = `# Cockroach Janta Party (CJP)
 
 ## Primary pages
 - [Home](${siteUrl}/): Movement overview, manifesto, FAQ
-- [10 October Protest](${siteUrl}/protests): Register for Jantar Mantar 24/7 protest
+- [Join the Protest](${siteUrl}/protests): Register for Jantar Mantar 24/7 protest
 - [Police brutality complaint](${siteUrl}/complaints/new?focus=police): Report assault/misbehavior with photo-video proof
 - [Public complaints](${siteUrl}/complaints): Civic issue feed
 - [Join](${siteUrl}/join): Become a member
 - [Blog](${siteUrl}/blog): Party dispatches
 
 ## Key facts
-- Event: 10 October 2026, Jantar Mantar, New Delhi, 24/7 peaceful presence
+- Event: Jantar Mantar, New Delhi, 24/7 peaceful presence
 - Demands: Jobs & Accountability, Education Reform, Press Freedom, Judicial Dignity, Transparency Now
 - Contact socials: Instagram @cockroachjantaparty, X @Cockroachisback
 `
